@@ -45,8 +45,8 @@ class grabespnstats extends Command
         $frequency = 60; //once an hour
         if (mt_rand(0,$frequency) == 1 || $force){
             $player = Player::leftJoin('projected_stats', 'projected_stats.player_id', '=', 'players.id')
-                ->select('players.id', 'players.slug', 'players.last_name', 'espn_alt_id')
-                ->where('players.id', 224)
+                ->select('players.id', 'players.slug', 'players.first_name', 'players.last_name', 'espn_alt_id')
+                // ->where('players.id', 224)
                 // ->whereRaw('players.id in (select player_id from player_position where position_id = (select id from positions where slug = ?))', array('k'))
                 ->orderBy('projected_stats.created_at')
                 ->first();
@@ -152,6 +152,7 @@ class grabespnstats extends Command
                     }
                 }
             }
+            $this->info('Grabbed stats for '.$player->first_name.' '. $player->last_name);
         }
     }
 }
