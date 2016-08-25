@@ -55,7 +55,7 @@ class CreateInitialTables extends Migration
             $table->decimal('passing_completions', 7, 2)->default(0);
             $table->decimal('passing_yards', 7, 2)->default(0);
             $table->decimal('passing_tds', 7, 2)->default(0);
-            $table->decimal('passing_int', 7, 2)->default(0);
+            $table->decimal('passing_ints', 7, 2)->default(0);
             $table->decimal('rushing_attempts', 7, 2)->default(0);
             $table->decimal('rushing_yards', 7, 2)->default(0);
             $table->decimal('rushing_tds', 7, 2)->default(0);
@@ -65,15 +65,19 @@ class CreateInitialTables extends Migration
             $table->decimal('receiving_tds', 7, 2)->default(0);
             $table->decimal('fumbles', 7, 2)->default(0);
             $table->decimal('defense_sacks', 7, 2)->default(0);
-            $table->decimal('defense_int', 7, 2)->default(0);
+            $table->decimal('defense_ints', 7, 2)->default(0);
             $table->decimal('defense_fumble_recoveries', 7, 2)->default(0);
             $table->decimal('defense_tds', 7, 2)->default(0);
             $table->decimal('defense_points_against', 7, 2)->default(0);
             $table->decimal('defense_yards_against', 7, 2)->default(0);
-            $table->decimal('fg_1_39', 7, 2)->default(0);
-            $table->decimal('fg_40_49', 7, 2)->default(0);
-            $table->decimal('fg_50', 7, 2)->default(0);
-            $table->decimal('extra_points', 7, 2)->default(0);
+            $table->decimal('fg_1_39_attempted', 7, 2)->default(0);
+            $table->decimal('fg_1_39_made', 7, 2)->default(0);
+            $table->decimal('fg_40_49_attempted', 7, 2)->default(0);
+            $table->decimal('fg_40_49_made', 7, 2)->default(0);
+            $table->decimal('fg_50_attempted', 7, 2)->default(0);
+            $table->decimal('fg_50_made', 7, 2)->default(0);
+            $table->decimal('extra_points_attempted', 7, 2)->default(0);
+            $table->decimal('extra_points_made', 7, 2)->default(0);
             $table->timestamps();
         });
         Schema::create('positions', function (Blueprint $table) {

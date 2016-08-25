@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Console\Commands;
-
+use DB;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
@@ -45,15 +45,24 @@ class grabespnstats extends Command
         $frequency = 60; //once an hour
         if (mt_rand(0,$frequency) == 1 || $force){
             $player = Player::leftJoin('projected_stats', 'projected_stats.player_id', '=', 'players.id')
-                ->select('players.id', 'players.slug', 'espn_alt_id')
-                ->where('players.id', 1)
+                ->select('players.id', 'players.slug', 'players.last_name', 'espn_alt_id')
+                ->where('players.id', 224)
+                // ->whereRaw('players.id in (select player_id from player_position where position_id = (select id from positions where slug = ?))', array('k'))
                 ->orderBy('projected_stats.created_at')
                 ->first();
-
-            $url = "http://games.espn.com/ffl/tools/projections?display=alt&avail=-1&search=".urlencode($player->last_name);
-            $str = file_get_contents($url);
-            Storage::put('data/'.$player->slug.'.html', $str);
-            // $str = Storage::get('data/brown.html');
+            if ($player->positions[0]->slug == 'd-st'){
+                $search = $player->first_name;
+            }else{
+                $search = $player->last_name;
+            }
+            $run_from_local = true;
+            if ($run_from_local){
+                $str = Storage::get('data/'.$player->slug.'.html');
+            }else{
+                $url = "http://games.espn.com/ffl/tools/projections?display=alt&avail=-1&search=".urlencode($search);
+                $str = file_get_contents($url);
+                Storage::put('data/'.$player->slug.'.html', $str);
+            }
             $DOM = new \DOMDocument;
             //The following line make DOMDocument ignore errors. This is needed because it's not prepared for HTML5
             libxml_use_internal_errors(true);
@@ -64,6 +73,7 @@ class grabespnstats extends Command
                     $as = $table->getElementsByTagName('a');
                     if ($as->length > 0){
                         $pid = $as->item(0)->getAttribute('playerid');
+                        // dd($as->item(0)->nodeValue);
                         if ($pid == $player->espn_alt_id){
                             $stat = ProjectedStat::where('player_id', $player->id)
                                 ->where('season', 2016)
@@ -89,9 +99,50 @@ class grabespnstats extends Command
                                     $stat->save();
                                     break;
                                 case 'qb':
+                                    $ca = $tds->item(2)->nodeValue;
+                                    $stat->passing_attempts = trim(substr($ca, 0, strpos($ca,'/')));
+                                    $stat->passing_completions = trim(substr($ca, strpos($ca,'/')+1, 999));
+                                    $stat->passing_yards = $tds->item(3)->nodeValue;
+                                    $stat->passing_tds = $tds->item(4)->nodeValue;
+                                    $stat->passing_ints = $tds->item(5)->nodeValue;
+                                    $stat->rushing_attempts = $tds->item(6)->nodeValue;
+                                    $stat->rushing_yards = $tds->item(7)->nodeValue;
+                                    $stat->rushing_tds = $tds->item(8)->nodeValue;
+                                    $stat->save();
+                                    break;
                                 case 'rb':
+                                    $stat->rushing_attempts = $tds->item(2)->nodeValue;
+                                    $stat->rushing_yards = $tds->item(3)->nodeValue;
+                                    $stat->rushing_tds = $tds->item(5)->nodeValue;
+                                    $stat->receptions = $tds->item(6)->nodeValue;
+                                    $stat->receiving_yards = $tds->item(7)->nodeValue;
+                                    $stat->receiving_tds = $tds->item(8)->nodeValue;
+                                    $stat->save();
+                                    break;
                                 case 'd-st':
+                                    $stat->defense_sacks = $tds->item(2)->nodeValue;
+                                    $stat->defense_ints = $tds->item(3)->nodeValue;
+                                    $stat->defense_fumble_recoveries = $tds->item(4)->nodeValue;
+                                    $stat->defense_tds = $tds->item(5)->nodeValue;
+                                    $stat->defense_points_against = $tds->item(6)->nodeValue;
+                                    $stat->defense_yards_against = $tds->item(7)->nodeValue;
+                                    $stat->save();
+                                    dd($stat);
+                                    break;
                                 case 'k':
+                                    $node = $tds->item(2)->nodeValue;
+                                    $stat->fg_1_39_attempted = trim(substr($node, 0, strpos($node,'/')));
+                                    $stat->fg_1_39_made = trim(substr($node, strpos($node,'/') + 1, 999));
+                                    $node = $tds->item(3)->nodeValue;
+                                    $stat->fg_40_49_attempted = trim(substr($node, 0, strpos($node,'/')));
+                                    $stat->fg_40_49_made = trim(substr($node, strpos($node,'/') + 1, 999));
+                                    $stat->fg_50_attempted = $tds->item(4)->nodeValue;
+                                    $stat->fg_50_made = $tds->item(4)->nodeValue;
+                                    $node = $tds->item(6)->nodeValue;
+                                    $stat->extra_points_attempted = trim(substr($node, 0, strpos($node,'/')));
+                                    $stat->extra_points_made = trim(substr($node, strpos($node,'/') + 1, 999));
+                                    $stat->save();
+                                    break;
                                 default:
                                     echo 'Bad position';
                                     dd($player);
