@@ -230,7 +230,7 @@ class PlayerSeeder extends Seeder{
             }
         }
         
-        $contents = File::get('storage/app/data/nfl.html');
+        $contents = File::get('storage/app/public/nfl.html');
         $DOM = new \DOMDocument;
         $DOM->loadHTML($contents);
         foreach($DOM->getElementsByTagName('tbody') as $tbody){
