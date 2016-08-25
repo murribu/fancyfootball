@@ -55,7 +55,7 @@ class grabespnstats extends Command
             }else{
                 $search = $player->last_name;
             }
-            $run_from_local = true;
+            $run_from_local = false;
             if ($run_from_local){
                 $str = Storage::get('data/'.$player->slug.'.html');
             }else{
