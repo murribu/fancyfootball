@@ -51,7 +51,7 @@ class grabespnstats extends Command
                 ->orderBy('projected_stats.created_at')
                 ->first();
             if ($player->positions[0]->slug == 'd-st'){
-                $search = $player->first_name;
+                $search = "&slotCategoryId=16";
             }else{
                 $search = $player->last_name;
             }
@@ -73,17 +73,16 @@ class grabespnstats extends Command
                     $as = $table->getElementsByTagName('a');
                     if ($as->length > 0){
                         $pid = $as->item(0)->getAttribute('playerid');
-                        // dd($as->item(0)->nodeValue);
+                        $stat = ProjectedStat::where('player_id', $player->id)
+                            ->where('season', 2016)
+                            ->first();
+                        if (!$stat){
+                            $stat = new ProjectedStat;
+                            $stat->player_id = $player->id;
+                            $stat->season = 2016;
+                            $stat->save();
+                        }
                         if ($pid == $player->espn_alt_id){
-                            $stat = ProjectedStat::where('player_id', $player->id)
-                                ->where('season', 2016)
-                                ->first();
-                            if (!$stat){
-                                $stat = new ProjectedStat;
-                                $stat->player_id = $player->id;
-                                $stat->season = 2016;
-                                $stat->save();
-                            }
                             $tr = $table->getElementsByTagName('tr')->item(2);
                             $tds = $tr->getElementsByTagName('td');
                             switch($player->positions[0]->slug){
@@ -127,7 +126,6 @@ class grabespnstats extends Command
                                     $stat->defense_points_against = floatval($tds->item(6)->nodeValue);
                                     $stat->defense_yards_against = floatval($tds->item(7)->nodeValue);
                                     $stat->save();
-                                    dd($stat);
                                     break;
                                 case 'k':
                                     $node = floatval($tds->item(2)->nodeValue);
