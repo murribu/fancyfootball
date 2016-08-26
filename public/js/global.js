@@ -1,0 +1,3 @@
+function authChange(){
+    location.href = '/';
+}
