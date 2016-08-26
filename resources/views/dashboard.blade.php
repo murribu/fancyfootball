@@ -4,6 +4,9 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.26/vue.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/0.9.3/vue-resource.min.js"></script>
 <script type="text/javascript" src="js/dashboard.vue.js"></script>
+<script type="text/javascript">
+    var token = '{{csrf_token()}}';
+</script>
 @endsection
 
 @section('content')
@@ -24,40 +27,46 @@
     @endif
     <dashboard></dashboard>
     <template id="dashboard-template">
-        <table class="table table-striped">
-            <thead>
-                <th>Rank</th>
-                <th>Team</th>
-                <th>Name</th>
-                <th>Pos</th>
-            </thead>
-            <tbody>
-                <tr v-for="player in players | orderBy orderByField orderByDirection | limitBy perPage start">
-                    <td>
-                        @{{player.attributes.espn_rank}}
-                    </td>
-                    <td>
-                        @{{player.espn_abbr}}
-                    </td>
-                    <td>
-                        @{{player.first_name}} @{{player.last_name}}
-                    </td>
-                    <td>
-                        @{{player.position}}
-                    </td>
-                </tr>
-            </tbody>
-            <tfoot v-show="players.length > perPage">
-                <tr>
-                    <td colspan="5">Page:
-                        <span v-for="index in (Math.ceil(players.length / 10))">
-                            <button class="btn btn-default btn-sm" v-show="index + 1 == currentPage" disabled>@{{ index + 1 }}</button>
-                            <span v-else><button class="btn btn-primary btn-sm" @click="currentPage = index + 1">@{{index + 1}}</button></span>
-                        </span>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+        <div class="draft-container">
+            <table class="table table-striped table-players">
+                <thead>
+                    <th>Rank</th>
+                    <th>Team</th>
+                    <th>Name</th>
+                    <th>Pos</th>
+                </thead>
+                <tbody>
+                    <tr v-for="player in players | orderBy orderByField orderByDirection | limitBy perPage start">
+                        <td>
+                            @{{player.attributes.espn_rank}}
+                        </td>
+                        <td>
+                            @{{player.espn_abbr}}
+                        </td>
+                        <td>
+                            <a href="#" @click="selectPlayer(player)">@{{player.first_name}} @{{player.last_name}}</a>
+                        </td>
+                        <td>
+                            @{{player.position}}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot v-show="players.length > perPage">
+                    <tr>
+                        <td colspan="5">Page:
+                            <span v-for="index in (Math.ceil(players.length / 10))">
+                                <button class="btn btn-default btn-sm" v-show="index + 1 == currentPage" disabled>@{{ index + 1 }}</button>
+                                <span v-else><button class="btn btn-primary btn-sm" @click="currentPage = index + 1">@{{index + 1}}</button></span>
+                            </span>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="player-info" v-show="selectedPlayer.first_name">
+                @{{selectedPlayer.first_name + ' ' + selectedPlayer.last_name}}
+                <input type="checkbox" class="form-control in_universe" @click="toggleUniverse()" v-model="selectedPlayer.in_universe" />
+            </div>            
+        </div>
     </template>
 </div>
 @endsection

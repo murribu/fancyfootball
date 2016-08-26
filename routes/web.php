@@ -35,5 +35,7 @@ Route::group(['middleware' => ['auth']], function(){
     
     //json
     Route::get('players', 'DataController@getPlayers');
+    Route::get('players/{slug}', 'DataController@getPlayer');
+    Route::post('toggle_universe', 'DataController@postToggleUniverse');
     
 });

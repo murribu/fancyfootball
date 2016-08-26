@@ -1,0 +1,21 @@
+.draft-container{
+    position:relative;
+}
+.table-players{
+    width: 550px;
+    height: 667px;
+    font-size: x-small;
+    position:absolute;
+    top:0;
+    left:0;
+}
+.table-players tr{
+}
+.table-players td{
+    padding:2px !important;
+}
+.player-info{
+    position:absolute;
+    left:570px;
+    top:0px;
+}

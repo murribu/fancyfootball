@@ -5,8 +5,9 @@ Vue.component('dashboard',{
             players:[],
             orderByField: 'created_at',
             orderByDirection: 1,
-            perPage: 10,
+            perPage: 35,
             currentPage: 1,
+            selectedPlayer: {},
         }
     },
     created: function(){
@@ -34,6 +35,24 @@ Vue.component('dashboard',{
             
             return;
         },
+        selectPlayer: function(p){
+            var vm = this;
+            this.$http.get('players/' + p.slug).then(function(data){
+                vm.selectedPlayer = JSON.parse(data.body);
+            });
+        },
+        toggleUniverse: function(){
+            if (this.selectedPlayer){
+                var sent = {
+                    _token: token,
+                    player: this.selectedPlayer.slug
+                };
+                var vm = this;
+                this.$http.post('toggle_universe', sent).then(function(data){
+                    vm.selectedPlayer = JSON.parse(data.body);
+                });
+            }
+        }
     }
 });
 

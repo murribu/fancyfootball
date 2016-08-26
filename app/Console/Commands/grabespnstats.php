@@ -89,58 +89,58 @@ class grabespnstats extends Command
                             switch($player->positions[0]->slug){
                                 case 'wr':
                                 case 'te':
-                                    $stat->receiving_targets = $tds->item(2)->nodeValue;
-                                    $stat->receptions = $tds->item(3)->nodeValue;
-                                    $stat->receiving_yards = $tds->item(4)->nodeValue;
-                                    $stat->receiving_tds = $tds->item(6)->nodeValue;
-                                    $stat->rushing_attempts = $tds->item(7)->nodeValue;
-                                    $stat->rushing_yards = $tds->item(8)->nodeValue;
-                                    $stat->rushing_tds = $tds->item(9)->nodeValue;
+                                    $stat->receiving_targets = floatval($tds->item(2)->nodeValue);
+                                    $stat->receptions = floatval($tds->item(3)->nodeValue);
+                                    $stat->receiving_yards = floatval($tds->item(4)->nodeValue);
+                                    $stat->receiving_tds = floatval($tds->item(6)->nodeValue);
+                                    $stat->rushing_attempts = floatval($tds->item(7)->nodeValue);
+                                    $stat->rushing_yards = floatval($tds->item(8)->nodeValue);
+                                    $stat->rushing_tds = floatval($tds->item(9)->nodeValue);
                                     $stat->save();
                                     break;
                                 case 'qb':
                                     $ca = $tds->item(2)->nodeValue;
-                                    $stat->passing_attempts = trim(substr($ca, 0, strpos($ca,'/')));
-                                    $stat->passing_completions = trim(substr($ca, strpos($ca,'/')+1, 999));
-                                    $stat->passing_yards = $tds->item(3)->nodeValue;
-                                    $stat->passing_tds = $tds->item(4)->nodeValue;
-                                    $stat->passing_ints = $tds->item(5)->nodeValue;
-                                    $stat->rushing_attempts = $tds->item(6)->nodeValue;
-                                    $stat->rushing_yards = $tds->item(7)->nodeValue;
-                                    $stat->rushing_tds = $tds->item(8)->nodeValue;
+                                    $stat->passing_attempts = floatval(trim(substr($ca, 0, strpos($ca,'/'))));
+                                    $stat->passing_completions = floatval(trim(substr($ca, strpos($ca,'/')+1, 999)));
+                                    $stat->passing_yards = floatval($tds->item(3)->nodeValue);
+                                    $stat->passing_tds = floatval($tds->item(4)->nodeValue);
+                                    $stat->passing_ints = floatval($tds->item(5)->nodeValue);
+                                    $stat->rushing_attempts = floatval($tds->item(6)->nodeValue);
+                                    $stat->rushing_yards = floatval($tds->item(7)->nodeValue);
+                                    $stat->rushing_tds = floatval($tds->item(8)->nodeValue);
                                     $stat->save();
                                     break;
                                 case 'rb':
-                                    $stat->rushing_attempts = $tds->item(2)->nodeValue;
-                                    $stat->rushing_yards = $tds->item(3)->nodeValue;
-                                    $stat->rushing_tds = $tds->item(5)->nodeValue;
-                                    $stat->receptions = $tds->item(6)->nodeValue;
-                                    $stat->receiving_yards = $tds->item(7)->nodeValue;
-                                    $stat->receiving_tds = $tds->item(8)->nodeValue;
+                                    $stat->rushing_attempts = floatval($tds->item(2)->nodeValue);
+                                    $stat->rushing_yards = floatval($tds->item(3)->nodeValue);
+                                    $stat->rushing_tds = floatval($tds->item(5)->nodeValue);
+                                    $stat->receptions = floatval($tds->item(6)->nodeValue);
+                                    $stat->receiving_yards = floatval($tds->item(7)->nodeValue);
+                                    $stat->receiving_tds = floatval($tds->item(8)->nodeValue);
                                     $stat->save();
                                     break;
                                 case 'd-st':
-                                    $stat->defense_sacks = $tds->item(2)->nodeValue;
-                                    $stat->defense_ints = $tds->item(3)->nodeValue;
-                                    $stat->defense_fumble_recoveries = $tds->item(4)->nodeValue;
-                                    $stat->defense_tds = $tds->item(5)->nodeValue;
-                                    $stat->defense_points_against = $tds->item(6)->nodeValue;
-                                    $stat->defense_yards_against = $tds->item(7)->nodeValue;
+                                    $stat->defense_sacks = floatval($tds->item(2)->nodeValue);
+                                    $stat->defense_ints = floatval($tds->item(3)->nodeValue);
+                                    $stat->defense_fumble_recoveries = floatval($tds->item(4)->nodeValue);
+                                    $stat->defense_tds = floatval($tds->item(5)->nodeValue);
+                                    $stat->defense_points_against = floatval($tds->item(6)->nodeValue);
+                                    $stat->defense_yards_against = floatval($tds->item(7)->nodeValue);
                                     $stat->save();
                                     dd($stat);
                                     break;
                                 case 'k':
-                                    $node = $tds->item(2)->nodeValue;
-                                    $stat->fg_1_39_attempted = trim(substr($node, 0, strpos($node,'/')));
-                                    $stat->fg_1_39_made = trim(substr($node, strpos($node,'/') + 1, 999));
-                                    $node = $tds->item(3)->nodeValue;
-                                    $stat->fg_40_49_attempted = trim(substr($node, 0, strpos($node,'/')));
-                                    $stat->fg_40_49_made = trim(substr($node, strpos($node,'/') + 1, 999));
-                                    $stat->fg_50_attempted = $tds->item(4)->nodeValue;
-                                    $stat->fg_50_made = $tds->item(4)->nodeValue;
-                                    $node = $tds->item(6)->nodeValue;
-                                    $stat->extra_points_attempted = trim(substr($node, 0, strpos($node,'/')));
-                                    $stat->extra_points_made = trim(substr($node, strpos($node,'/') + 1, 999));
+                                    $node = floatval($tds->item(2)->nodeValue);
+                                    $stat->fg_1_39_attempted = floatval(trim(substr($node, 0, strpos($node,'/'))));
+                                    $stat->fg_1_39_made = floatval(trim(substr($node, strpos($node,'/') + 1, 999)));
+                                    $node = floatval($tds->item(3)->nodeValue);
+                                    $stat->fg_40_49_attempted = floatval(trim(substr($node, 0, strpos($node,'/'))));
+                                    $stat->fg_40_49_made = floatval(trim(substr($node, strpos($node,'/') + 1, 999)));
+                                    $stat->fg_50_attempted = floatval($tds->item(4)->nodeValue);
+                                    $stat->fg_50_made = floatval($tds->item(4)->nodeValue);
+                                    $node = floatval($tds->item(6)->nodeValue);
+                                    $stat->extra_points_attempted = floatval(trim(substr($node, 0, strpos($node,'/'))));
+                                    $stat->extra_points_made = floatval(trim(substr($node, strpos($node,'/') + 1, 999)));
                                     $stat->save();
                                     break;
                                 default:
