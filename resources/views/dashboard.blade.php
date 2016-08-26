@@ -34,9 +34,12 @@
                     <th>Team</th>
                     <th>Name</th>
                     <th>Pos</th>
+                    @if ($user->league())
+                        <th>Uni</th>
+                    @endif
                 </thead>
                 <tbody>
-                    <tr v-for="player in players | orderBy orderByField orderByDirection | limitBy perPage start">
+                    <tr @click="selectPlayer(player)" v-for="player in players | orderBy orderByField orderByDirection | limitBy perPage start">
                         <td>
                             @{{player.attributes.espn_rank}}
                         </td>
@@ -44,11 +47,16 @@
                             @{{player.espn_abbr}}
                         </td>
                         <td>
-                            <a href="#" @click="selectPlayer(player)">@{{player.first_name}} @{{player.last_name}}</a>
+                            <a href="#">@{{player.first_name}} @{{player.last_name}}</a>
                         </td>
                         <td>
                             @{{player.position}}
                         </td>
+                        @if ($user->league())
+                            <td>
+                                @{{player.universe == 1 ? 'Yes' : 'No'}}
+                            </td>
+                        @endif
                     </tr>
                 </tbody>
                 <tfoot v-show="players.length > perPage">
@@ -63,8 +71,9 @@
                 </tfoot>
             </table>
             <div class="player-info" v-show="selectedPlayer.first_name">
-                @{{selectedPlayer.first_name + ' ' + selectedPlayer.last_name}}
-                <input type="checkbox" class="form-control in_universe" @click="toggleUniverse()" v-model="selectedPlayer.in_universe" />
+                @{{selectedPlayer.first_name + ' ' + selectedPlayer.last_name}}<br>
+                In Universe: <input type="checkbox" class="form-control in_universe" @click="toggleUniverse()" v-model="selectedPlayer.in_universe" />
+                <div class="universe_status alert" v-bind:class="{ 'alert-success': universeStatus.complete, 'alert-danger': universeStatus.error }">@{{universeStatus.msg}}</div>
             </div>            
         </div>
     </template>
