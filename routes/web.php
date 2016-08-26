@@ -25,4 +25,6 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('about', 'HomeController@getAbout');
     Route::get('contact', 'HomeController@getContact');
     
+    Route::get('players', 'DataController@getPlayers');
+    
 });

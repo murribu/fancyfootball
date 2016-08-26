@@ -11,4 +11,8 @@ class PlayerAttributeValue extends Model {
     public function player(){
         return $this->belongsTo('App\Models\Player');
     }
+    
+    public function player_attribute(){
+        return $this->belongsTo('App\Models\PlayerAttribute');
+    }
 }

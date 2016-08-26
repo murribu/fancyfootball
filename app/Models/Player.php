@@ -19,13 +19,13 @@ class Player extends Model {
     }
     
     public function player_attributes_values(){
-        return $this->hasMany('App\PlayerAttributeValue');
+        return $this->hasMany('App\Models\PlayerAttributeValue');
     }
     
     public function attributes(){
         $att = [];
         foreach($this->player_attributes_values as $v){
-            $att[$v->player_attributes->name] = $v->value;
+            $att[$v->player_attribute->name] = $v->value;
         }
         
         return $att;

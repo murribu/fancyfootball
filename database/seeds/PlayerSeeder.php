@@ -286,6 +286,9 @@ class PlayerSeeder extends Seeder{
                         $p->positions()->sync([$position->id]);
                         // dd($p);
                     }
+                    if ($p){
+                        $p->set_attribute('espn_rank', $tds->item(0)->nodeValue);
+                    }
                 }
             }
         }
