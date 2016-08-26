@@ -10,9 +10,17 @@
 @include('nav', ['activelink' => 'home'])
 <div class="container" style="padding-top:75px;">
     @if (count($user->leagues) > 0)
-        
+        <ul class="nav nav-tabs nav-justified">
+            @foreach($user->leagues as $league)
+            <li{{$league->id == $user->league()->id ? ' class=active' : ''}}><a href="/leagues/{{$league->slug}}/setactive">{{$league->name}}</a></li>
+            @endforeach
+        </ul>
     @else
-        <h3><a href="/leagues/new">Create a league</a>, if you want to run a draft.</h3>
+        <h4><a href="/leagues/new">Create a league</a>, if you want to run a draft.</h4>
+    @endif
+    @if ($user->league())
+        <a href="/leagues/{{$user->league()->slug}}/edit" class="btn btn-primary">Edit {{$user->league()->name}}</a>
+        <a href="/leagues/new" class="btn btn-primary">New League</a>
     @endif
     <dashboard></dashboard>
     <template id="dashboard-template">
@@ -29,13 +37,13 @@
                         @{{player.attributes.espn_rank}}
                     </td>
                     <td>
-                        @{{player.nflteam.espn_abbr}}
+                        @{{player.espn_abbr}}
                     </td>
                     <td>
                         @{{player.first_name}} @{{player.last_name}}
                     </td>
                     <td>
-                        @{{player.positions[0].abbr}}
+                        @{{player.position}}
                     </td>
                 </tr>
             </tbody>

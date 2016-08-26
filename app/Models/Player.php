@@ -33,7 +33,7 @@ class Player extends Model {
     
     public function attribute($key, $default = null){
         $row = PlayerAttributeValue::where('player_id', $this->id)
-            ->whereRaw('player_attribute_id in (select id from player_attributess where name = ?)', array($key))
+            ->whereRaw('player_attribute_id in (select id from player_attributes where name = ?)', array($key))
             ->first();
         if ($row){
             return $row->value;

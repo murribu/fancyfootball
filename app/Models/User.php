@@ -68,6 +68,14 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\FacebookUser');
     }
     
+    public function leagues(){
+        return $this->hasMany('App\Models\League');
+    }
+    
+    public function league(){
+        return $this->leagues()->orderBy('active', 'desc')->first();
+    }
+    
     public function getRememberToken()
     {
         return null; // not supported

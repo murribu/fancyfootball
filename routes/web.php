@@ -25,6 +25,15 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('about', 'HomeController@getAbout');
     Route::get('contact', 'HomeController@getContact');
     
+    Route::get('leagues/new', 'LeagueController@getLeague');
+    Route::post('leagues/new', 'LeagueController@postLeague');
+    Route::get('leagues/{slug}/setactive', 'LeagueController@getSetActive');
+    Route::get('leagues/{slug}/edit', 'LeagueController@getLeague');
+    Route::post('leagues/{slug}/edit', 'LeagueController@postLeague');
+    
+    
+    
+    //json
     Route::get('players', 'DataController@getPlayers');
     
 });
