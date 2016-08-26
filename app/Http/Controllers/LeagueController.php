@@ -62,6 +62,7 @@ class LeagueController extends Controller
         $league->name = Input::get('name');
         $league->user_id = Auth::user()->id;
         $league->save();
+        $league->set_attribute('team_count', Input::get('team_count'));
         foreach(self::$scorings as $s){
             $league->set_attribute($s['slug'], Input::get($s['slug']));
         }

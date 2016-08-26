@@ -25,7 +25,11 @@ class Player extends Model {
     public function attributes(){
         $att = [];
         foreach($this->player_attributes_values as $v){
-            $att[$v->player_attribute->name] = $v->value;
+            if (intval($v->value) == $v->value){
+                $att[$v->player_attribute->name] = intval($v->value);
+            }else{
+                $att[$v->player_attribute->name] = $v->value;
+            }
         }
         
         return $att;

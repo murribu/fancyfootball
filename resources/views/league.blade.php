@@ -16,6 +16,12 @@
                         <input class="form-control" name="name" value="{{isset($league) ? $league->name : ''}}" />
                     </div>
                 </div>
+                <div class="form-group row">
+                    <label class="form-label control-label col-xs-12 col-sm-2" for="name">Number of Teams</label>
+                    <div class="col-xs-12 col-sm-10">
+                        <input class="form-control" name="team_count" value="{{isset($league) ? $league->attribute('team_count') : ''}}" />
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-xs-12 col-sm-6">
                         @foreach($scorings as $s)

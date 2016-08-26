@@ -3,7 +3,7 @@ Vue.component('dashboard',{
     data: function(){
         return {
             players:[],
-            orderByField: 'created_at',
+            orderByField: 'attributes.espn_rank',
             orderByDirection: 1,
             perPage: 35,
             currentPage: 1,
