@@ -48,7 +48,7 @@ class grabespnstats extends Command
                 ->select('players.id', 'players.slug', 'players.first_name', 'players.last_name', 'espn_alt_id')
                 // ->where('players.id', 337)
                 // ->whereRaw('players.id in (select player_id from player_position where position_id = (select id from positions where slug = ?))', array('k'))
-                ->orderBy('projected_stats.created_at')
+                ->orderBy('projected_stats.updated_at')
                 ->first();
             if ($player->positions[0]->slug == 'd-st'){
                 $search = "&slotCategoryId=16";
