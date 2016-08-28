@@ -42,7 +42,7 @@ class grabespnstats extends Command
     public function handle()
     {
         $force = $this->option('force');
-        $frequency = 2; //every $frequency minutes
+        $frequency = 20; //every $frequency minutes
         if (mt_rand(0,$frequency) == 1 || $force){
             $player = Player::leftJoin('projected_stats', 'projected_stats.player_id', '=', 'players.id')
                 ->select('players.id', 'players.slug', 'players.first_name', 'players.last_name', 'espn_alt_id')
