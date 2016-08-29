@@ -61,7 +61,7 @@ class grabespnstats extends Command
             }else{
                 $url = "http://games.espn.com/ffl/tools/projections?display=alt&avail=-1&search=".$search;
                 $str = file_get_contents($url);
-                Storage::put('data/'.$player->slug.'.html', $str);
+                @Storage::put('data/'.$player->slug.'.html', $str);
             }
             $DOM = new \DOMDocument;
             //The following line make DOMDocument ignore errors. This is needed because it's not prepared for HTML5
@@ -149,12 +149,11 @@ class grabespnstats extends Command
                             if ($outlooktr = $table->getElementsByTagName('tr')->item(3)){
                                 $player->set_attribute('espn_outlook', $outlooktr->getElementsByTagName('td')->item(0)->textContent);
                             }
-                        }else{
-                            $stat->save();
                         }
                     }
                 }
             }
+            $stat->touch();
             $this->info('Grabbed stats for '.$player->first_name.' '. $player->last_name);
         }
     }
