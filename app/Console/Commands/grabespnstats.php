@@ -46,20 +46,20 @@ class grabespnstats extends Command
         if (mt_rand(0,$frequency) == 1 || $force){
             $player = Player::leftJoin('projected_stats', 'projected_stats.player_id', '=', 'players.id')
                 ->select('players.id', 'players.slug', 'players.first_name', 'players.last_name', 'espn_alt_id')
-                // ->where('players.id', 337)
+                // ->where('players.id', 144)
                 // ->whereRaw('players.id in (select player_id from player_position where position_id = (select id from positions where slug = ?))', array('k'))
                 ->orderBy('projected_stats.updated_at')
                 ->first();
             if ($player->positions[0]->slug == 'd-st'){
                 $search = "&slotCategoryId=16";
             }else{
-                $search = $player->last_name;
+                $search = urlencode($player->last_name);
             }
             $run_from_local = false;
             if ($run_from_local){
                 $str = Storage::get('data/'.$player->slug.'.html');
             }else{
-                $url = "http://games.espn.com/ffl/tools/projections?display=alt&avail=-1&search=".urlencode($search);
+                $url = "http://games.espn.com/ffl/tools/projections?display=alt&avail=-1&search=".$search;
                 $str = file_get_contents($url);
                 Storage::put('data/'.$player->slug.'.html', $str);
             }
