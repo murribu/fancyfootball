@@ -29,6 +29,8 @@
     <template id="dashboard-template">
         <div class="draft-container">
             <div class="filter-positions">
+                <button class="btn btn-primary" v-show="filterByTaken" @click="filterByTaken = false">Show Taken Players</button>
+                <button class="btn btn-primary" v-show="!filterByTaken" @click="filterByTaken = true">Hide Taken Players</button>
                 <button class="btn btn-sm" v-for="p in positions" @click="selectPosition(p)" v-bind:class="{ 'btn-default': !p.selected, 'btn-primary': p.selected}">@{{p.abbr}}</button>
             </div>
             <div class="player-table-container">
@@ -40,11 +42,12 @@
                         <th>Pos</th>
                         @if ($user->league())
                             <th>Uni</th>
+                            <th>Taken</th>
                             <th>Value</th>
                         @endif
                     </thead>
                     <tbody>
-                        <tr @click="selectPlayer(player)" v-for="player in players | orderBy orderByField orderByDirection | filterBy filterPlayersByPosition">
+                        <tr @click="selectPlayer(player)" v-for="player in players | orderBy orderByField orderByDirection | filterBy filterPlayersByPosition | filterBy filterPlayersByTaken">
                             <td>
                                 @{{player.attributes.espn_rank}}
                             </td>
@@ -62,6 +65,9 @@
                                     @{{player.universe == 1 ? 'Yes' : 'No'}}
                                 </td>
                                 <td>
+                                    @{{player.taken == 1 ? 'Yes' : 'No'}}
+                                </td>
+                                <td>
                                     @{{player.points_above_replacement}}
                                 </td>
                             @endif
@@ -72,7 +78,9 @@
             <div class="player-info" v-show="selectedPlayer.first_name">
                 @{{selectedPlayer.first_name + ' ' + selectedPlayer.last_name}}<br>
                 In Universe: <input type="checkbox" class="form-control in_universe" @click="toggleUniverse()" v-model="selectedPlayer.in_universe" />
-                <div class="universe_status alert alert-danger" v-for="err in universeErrors">@{{err}}</div>     
+                <div class="universe_status alert alert-danger" v-for="err in universeErrors">@{{err}}</div>
+                <button class="btn btn-primary" @click="takePlayer(selectedPlayer)" v-show="selectedPlayer.taken == 0">Take Player</button>
+                <button class="btn btn-danger" @click="untakePlayer(selectedPlayer)" v-show="selectedPlayer.taken == 1">Un-Take Player</button>
             </div>       
         </div>
     </template>

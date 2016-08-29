@@ -9,7 +9,7 @@ Vue.component('dashboard',{
             orderByDirection: -1,
             selectedPlayer: {},
             universeErrors: [],
-            playerFilter: {}
+            filterByTaken: false,
         }
     },
     created: function(){
@@ -28,9 +28,6 @@ Vue.component('dashboard',{
             this.$http.get('players').then(function(data){
                 vm.players = JSON.parse(data.body);
                 vm.calculateUniverse();
-                if (this.universeErrors.length == 0){
-                    vm.calculateValues();
-                }
             });
         },
         loadLeague: function(){
@@ -78,11 +75,30 @@ Vue.component('dashboard',{
             }
             p.selected = true;
         },
+        filterPlayersByTaken: function(p) {
+            return !this.filterByTaken || p.taken == 0;
+        },
         filterPlayersByPosition: function(p){
             var include;
             var allPos = this.positions.find(function(d){ return d.abbr == 'All' });
             var playerPos = this.positions.find(function(d){ return d.abbr == p.position });
             return allPos.selected || playerPos.selected;
+        },
+        takePlayer: function(p){
+            var vm = this;
+            this.$http.get('players/' + p.slug + '/take').then(function(data){
+                vm.loadPlayers();
+                vm.selectPlayer(p);
+            });
+            return false;
+        },
+        untakePlayer: function(p){
+            var vm = this;
+            this.$http.get('players/' + p.slug + '/untake').then(function(data){
+                vm.loadPlayers();
+                vm.selectPlayer(p);
+            });
+            return false;
         },
         toggleUniverse: function(){
             if (this.selectedPlayer){
@@ -94,6 +110,7 @@ Vue.component('dashboard',{
                 this.$http.post('toggle_universe', sent).then(function(data){
                     vm.selectedPlayer = JSON.parse(data.body);
                     vm.loadPlayers();
+                    vm.calculateValues();
                 });
             }
         },
