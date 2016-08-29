@@ -26,7 +26,13 @@ class DataController extends Controller
                     $join->on('universe.league_id', '=', DB::raw(Auth::user()->league()->id));
                 }
             })
-            ->selectRaw('players.*, nflteams.espn_abbr, positions.abbr position, ifnull(universe.active,0) universe')
+            ->leftJoin('player_values', function($join){
+                $join->on('player_values.player_id', '=', 'players.id');
+                if (Auth::user() && Auth::user()->league()){
+                    $join->on('player_values.league_id', '=', DB::raw(Auth::user()->league()->id));
+                }
+            })
+            ->selectRaw('players.*, nflteams.espn_abbr, positions.abbr position, ifnull(universe.active,0) universe, player_values.points_above_replacement')
             ->orderBy('universe', 'desc')
             ->orderBy('players.id')
             ->limit(300)
@@ -34,6 +40,7 @@ class DataController extends Controller
         // dd(DB::getQueryLog());
         foreach($players as $k=>$player){
             $players[$k]->attributes = $player->attributes();
+            $players[$k]->points_above_replacement = floatval($players[$k]->points_above_replacement);
         }
         return $players;
     }
@@ -82,5 +89,11 @@ class DataController extends Controller
         }
         
         return $league;
+    }
+    
+    public function getCalcValues(){
+        if (Auth::user() && Auth::user()->league()){
+            return Auth::user()->league()->calculateValues();
+        }
     }
 }

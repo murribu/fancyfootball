@@ -40,4 +40,6 @@ Route::group(['middleware' => ['auth']], function(){
     
     Route::get('league', 'DataController@getLeague');
     
+    Route::get('calc_values', 'DataController@getCalcValues');
+    
 });

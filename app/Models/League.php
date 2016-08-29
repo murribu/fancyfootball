@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Models;
-
+use DB;
 use Illuminate\Database\Eloquent\Model;
 
 class League extends Model {
@@ -48,5 +48,53 @@ class League extends Model {
         $pav->save();
             
         return $pav;
+    }
+    
+    public function calculateValues(){
+        $players = Player::orderBy('players.id')->get();
+        
+        foreach($players as $p){
+            $p->calculate_projected_points($this);
+        }
+        
+        $replacement_levels = [
+            'qb' => 0,
+            'rb' => 0,
+            'wr' => 0,
+            'te' => 0,
+            'k' => 0,
+            'd-st' => 0,
+        ];
+        $limit = 5;
+        // DB::enableQueryLog();
+        foreach($replacement_levels as $pos=>$points){
+            $values = PlayerValue::join('player_attribute_values', 'player_attribute_values.player_id', '=', 'player_values.player_id')
+                ->join('player_attributes', 'player_attributes.id', '=', 'player_attribute_values.player_attribute_id')
+                ->where('player_attributes.name', '=', 'espn_rank')
+                ->whereRaw('player_values.player_id in (select player_id from player_position where position_id = (select id from positions where slug = ?))', [$pos])
+                ->whereRaw('player_values.player_id not in (select player_id from universe where active = 1 and league_id = ?)', [$this->id])
+                ->select('player_values.id', 'player_values.points')
+                ->orderByRaw('cast(player_attribute_values.value as signed)')
+                ->limit($limit)
+                ->get();
+            $avg = 0;
+            // dd($values);
+            foreach($values as $v){
+                $avg += $v->points;
+            }
+            
+            $replacement_levels[$pos] = $avg/$limit;
+        }
+        
+        foreach($players as $p){
+            if (count($p->player_values($this->id)) > 0){
+                $proj = $p->player_values($this->id);
+                $proj->points_above_replacement = 
+                    $proj->points - $replacement_levels[$p->positions[0]->slug];
+                $proj->save();
+            }
+        }
+        // dd(DB::getQueryLog());
+        return $replacement_levels;
     }
 }

@@ -5,8 +5,8 @@ Vue.component('dashboard',{
             players:[],
             positions:[{abbr: 'All', selected: true}],
             league: {},
-            orderByField: 'attributes.espn_rank',
-            orderByDirection: 1,
+            orderByField: 'points_above_replacement',
+            orderByDirection: -1,
             selectedPlayer: {},
             universeErrors: [],
             playerFilter: {}
@@ -28,6 +28,9 @@ Vue.component('dashboard',{
             this.$http.get('players').then(function(data){
                 vm.players = JSON.parse(data.body);
                 vm.calculateUniverse();
+                if (this.universeErrors.length == 0){
+                    vm.calculateValues();
+                }
             });
         },
         loadLeague: function(){
@@ -44,6 +47,12 @@ Vue.component('dashboard',{
                 for(p of positions){
                     vm.positions.push(p);
                 }
+            });
+        },
+        calculateValues: function(){
+            var vm = this;
+            this.$http.get('calc_values').then(function(data){
+                vm.loadPlayers();
             });
         },
         updateOrderBy: function(col){

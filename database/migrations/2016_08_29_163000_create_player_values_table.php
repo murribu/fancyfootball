@@ -19,7 +19,10 @@ class CreatePlayerValuesTable extends Migration
             $table->foreign('league_id')->references('id')->on('leagues');
             $table->integer('player_id')->unsigned();
             $table->foreign('player_id')->references('id')->on('players');
-            $table->decimal('value', 8, 6);
+            $table->decimal('points', 10, 6)->default(0);
+            $table->decimal('points_above_replacement', 10, 6)->default(0);
+            
+            $table->unique(['league_id', 'player_id']);
             $table->timestamps();
         });
     }

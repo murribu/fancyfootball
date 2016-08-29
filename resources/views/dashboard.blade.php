@@ -40,6 +40,7 @@
                         <th>Pos</th>
                         @if ($user->league())
                             <th>Uni</th>
+                            <th>Value</th>
                         @endif
                     </thead>
                     <tbody>
@@ -60,19 +61,12 @@
                                 <td>
                                     @{{player.universe == 1 ? 'Yes' : 'No'}}
                                 </td>
+                                <td>
+                                    @{{player.points_above_replacement}}
+                                </td>
                             @endif
                         </tr>
                     </tbody>
-                    <tfoot v-show="players.length > perPage">
-                        <tr>
-                            <td colspan="5">Page:
-                                <span v-for="index in (Math.ceil(players.length / 10))">
-                                    <button class="btn btn-default btn-sm" v-show="index + 1 == currentPage" disabled>@{{ index + 1 }}</button>
-                                    <span v-else><button class="btn btn-primary btn-sm" @click="currentPage = index + 1">@{{index + 1}}</button></span>
-                                </span>
-                            </td>
-                        </tr>
-                    </tfoot>
                 </table>
             </div>
             <div class="player-info" v-show="selectedPlayer.first_name">
