@@ -10,11 +10,13 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Models\Player;
+use App\Models\Position;
 use App\Models\Universe;
 
 class DataController extends Controller
 {
     public function getPlayers(){
+        // DB::enableQueryLog();
         $players = Player::leftJoin('nflteams', 'nflteams.id', '=', 'players.nflteam_id')
             ->leftJoin('player_position', 'players.id', '=', 'player_position.player_id')
             ->leftJoin('positions', 'positions.id', '=', 'player_position.position_id')
@@ -25,8 +27,11 @@ class DataController extends Controller
                 }
             })
             ->selectRaw('players.*, nflteams.espn_abbr, positions.abbr position, ifnull(universe.active,0) universe')
-            ->limit(100)
+            ->orderBy('universe', 'desc')
+            ->orderBy('players.id')
+            ->limit(300)
             ->get();
+        // dd(DB::getQueryLog());
         foreach($players as $k=>$player){
             $players[$k]->attributes = $player->attributes();
         }
@@ -44,6 +49,14 @@ class DataController extends Controller
             $player->in_universe = false;
         }
         return $player;
+    }
+    
+    public function getPositions(){
+        $positions = Position::all();
+        foreach($positions as $p){
+            $p->selected = false;
+        }
+        return $positions;
     }
     
     public function postToggleUniverse(){

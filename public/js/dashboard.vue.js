@@ -3,18 +3,25 @@ Vue.component('dashboard',{
     data: function(){
         return {
             players:[],
+            positions:[{
+                selected: true,
+            }],
             league: {},
             orderByField: 'attributes.espn_rank',
             orderByDirection: 1,
-            perPage: 35,
-            currentPage: 1,
             selectedPlayer: {},
-            universeStatus: {}
+            universeStatus: {
+                complete: false,
+                error: false,
+                msg: '',
+            },
+            playerFilter: {}
         }
     },
     created: function(){
         this.loadPlayers();
         this.loadLeague();
+        this.loadPositions();
     },
     computed: {
         start: function(){
@@ -35,6 +42,16 @@ Vue.component('dashboard',{
                 vm.league = JSON.parse(data.body);
             });
         },
+        loadPositions: function(){
+            var vm = this;
+            this.$http.get('positions').then(function(data){
+                vm.positions = [{abbr: 'All', selected: true}];
+                var positions = JSON.parse(data.body)
+                for(p of positions){
+                    vm.positions.push(p);
+                }
+            });
+        },
         updateOrderBy: function(col){
             if (col == this.orderByField){
                 this.orderByDirection = -1 * this.orderByDirection;
@@ -51,6 +68,18 @@ Vue.component('dashboard',{
                 vm.selectedPlayer = JSON.parse(data.body);
             });
             return false;
+        },
+        selectPosition: function(p){
+            for(pos of this.positions){
+                pos.selected = false;
+            }
+            p.selected = true;
+        },
+        filterPlayersByPosition: function(p){
+            var include;
+            var allPos = this.positions.find(function(d){ return d.abbr == 'All' });
+            var playerPos = this.positions.find(function(d){ return d.abbr == p.position });
+            return allPos.selected || playerPos.selected;
         },
         toggleUniverse: function(){
             if (this.selectedPlayer){
@@ -77,11 +106,11 @@ Vue.component('dashboard',{
                 this.universeStatus.error = true;
                 this.universeStatus.complete = false;
                 if (this.league.count_wr * this.league.team_count > wr.length){
-                    this.universeStatus.msg += 'Too many';
-                }else{
                     this.universeStatus.msg += 'Not enough';
+                }else{
+                    this.universeStatus.msg += 'Too many';
                 }
-                this.universeStatus.msg += ' Wide Receivers';
+                this.universeStatus.msg += ' Wide Receivers\r\ntest';
             }
         },
     }

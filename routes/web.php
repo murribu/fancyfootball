@@ -31,11 +31,11 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('leagues/{slug}/edit', 'LeagueController@getLeague');
     Route::post('leagues/{slug}/edit', 'LeagueController@postLeague');
     
-    
-    
     //json
     Route::get('players', 'DataController@getPlayers');
     Route::get('players/{slug}', 'DataController@getPlayer');
+    Route::get('positions', 'DataController@getPositions');
+    
     Route::post('toggle_universe', 'DataController@postToggleUniverse');
     
     Route::get('league', 'DataController@getLeague');

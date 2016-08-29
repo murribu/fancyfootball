@@ -1,11 +1,16 @@
 .draft-container{
     position:relative;
 }
+.player-table-container{
+    height:500px;
+    overflow-y:scroll;
+    width:550px;
+}
 .table-players{
-    width: 550px;
+    width: 525px;
     height: 667px;
     font-size: x-small;
-    position:absolute;
+    position:relative;
     top:0;
     left:0;
 }
@@ -13,6 +18,10 @@
 }
 .table-players td{
     padding:2px !important;
+}
+.filter-positions{
+    width: 100%;
+    text-align: right;
 }
 .player-info{
     position:absolute;

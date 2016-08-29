@@ -28,53 +28,58 @@
     <dashboard></dashboard>
     <template id="dashboard-template">
         <div class="draft-container">
-            <table class="table table-striped table-players">
-                <thead>
-                    <th>Rank</th>
-                    <th>Team</th>
-                    <th>Name</th>
-                    <th>Pos</th>
-                    @if ($user->league())
-                        <th>Uni</th>
-                    @endif
-                </thead>
-                <tbody>
-                    <tr @click="selectPlayer(player)" v-for="player in players | orderBy orderByField orderByDirection | limitBy perPage start">
-                        <td>
-                            @{{player.attributes.espn_rank}}
-                        </td>
-                        <td>
-                            @{{player.espn_abbr}}
-                        </td>
-                        <td>
-                            <a href="#">@{{player.first_name}} @{{player.last_name}}</a>
-                        </td>
-                        <td>
-                            @{{player.position}}
-                        </td>
+            <div class="player-table-container">
+                <div class="filter-positions">
+                    <button class="btn btn-sm" v-for="p in positions" @click="selectPosition(p)" v-bind:class="{ 'btn-default': !p.selected, 'btn-primary': p.selected}">@{{p.abbr}}</button>
+                </div>
+                <table class="table table-striped table-players">
+                    <thead>
+                        <th>Rank</th>
+                        <th>Team</th>
+                        <th>Name</th>
+                        <th>Pos</th>
                         @if ($user->league())
-                            <td>
-                                @{{player.universe == 1 ? 'Yes' : 'No'}}
-                            </td>
+                            <th>Uni</th>
                         @endif
-                    </tr>
-                </tbody>
-                <tfoot v-show="players.length > perPage">
-                    <tr>
-                        <td colspan="5">Page:
-                            <span v-for="index in (Math.ceil(players.length / 10))">
-                                <button class="btn btn-default btn-sm" v-show="index + 1 == currentPage" disabled>@{{ index + 1 }}</button>
-                                <span v-else><button class="btn btn-primary btn-sm" @click="currentPage = index + 1">@{{index + 1}}</button></span>
-                            </span>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
+                    </thead>
+                    <tbody>
+                        <tr @click="selectPlayer(player)" v-for="player in players | orderBy orderByField orderByDirection | filterBy filterPlayersByPosition">
+                            <td>
+                                @{{player.attributes.espn_rank}}
+                            </td>
+                            <td>
+                                @{{player.espn_abbr}}
+                            </td>
+                            <td>
+                                <a href="#">@{{player.first_name}} @{{player.last_name}}</a>
+                            </td>
+                            <td>
+                                @{{player.position}}
+                            </td>
+                            @if ($user->league())
+                                <td>
+                                    @{{player.universe == 1 ? 'Yes' : 'No'}}
+                                </td>
+                            @endif
+                        </tr>
+                    </tbody>
+                    <tfoot v-show="players.length > perPage">
+                        <tr>
+                            <td colspan="5">Page:
+                                <span v-for="index in (Math.ceil(players.length / 10))">
+                                    <button class="btn btn-default btn-sm" v-show="index + 1 == currentPage" disabled>@{{ index + 1 }}</button>
+                                    <span v-else><button class="btn btn-primary btn-sm" @click="currentPage = index + 1">@{{index + 1}}</button></span>
+                                </span>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
             <div class="player-info" v-show="selectedPlayer.first_name">
                 @{{selectedPlayer.first_name + ' ' + selectedPlayer.last_name}}<br>
                 In Universe: <input type="checkbox" class="form-control in_universe" @click="toggleUniverse()" v-model="selectedPlayer.in_universe" />
-                <div class="universe_status alert" v-bind:class="{ 'alert-success': universeStatus.complete, 'alert-danger': universeStatus.error }">@{{universeStatus.msg}}</div>
-            </div>            
+                <div class="universe_status alert" v-bind:class="{ 'alert-success': universeStatus.complete, 'alert-danger': universeStatus.error }">@{{universeStatus.msg}}</div>     
+            </div>       
         </div>
     </template>
 </div>
