@@ -77,7 +77,7 @@ class DataController extends Controller
         if (Auth::user() && Auth::user()->league()){
             $league = Auth::user()->league();
             foreach($league->attributes() as $key=>$val){
-                $league->{$key} = $val;
+                $league->{str_replace('-', '_', $key)} = $val;
             }
         }
         

@@ -28,10 +28,10 @@
     <dashboard></dashboard>
     <template id="dashboard-template">
         <div class="draft-container">
+            <div class="filter-positions">
+                <button class="btn btn-sm" v-for="p in positions" @click="selectPosition(p)" v-bind:class="{ 'btn-default': !p.selected, 'btn-primary': p.selected}">@{{p.abbr}}</button>
+            </div>
             <div class="player-table-container">
-                <div class="filter-positions">
-                    <button class="btn btn-sm" v-for="p in positions" @click="selectPosition(p)" v-bind:class="{ 'btn-default': !p.selected, 'btn-primary': p.selected}">@{{p.abbr}}</button>
-                </div>
                 <table class="table table-striped table-players">
                     <thead>
                         <th>Rank</th>
@@ -78,7 +78,7 @@
             <div class="player-info" v-show="selectedPlayer.first_name">
                 @{{selectedPlayer.first_name + ' ' + selectedPlayer.last_name}}<br>
                 In Universe: <input type="checkbox" class="form-control in_universe" @click="toggleUniverse()" v-model="selectedPlayer.in_universe" />
-                <div class="universe_status alert" v-bind:class="{ 'alert-success': universeStatus.complete, 'alert-danger': universeStatus.error }">@{{universeStatus.msg}}</div>     
+                <div class="universe_status alert alert-danger" v-for="err in universeErrors">@{{err}}</div>     
             </div>       
         </div>
     </template>

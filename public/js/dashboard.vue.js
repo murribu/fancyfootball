@@ -3,18 +3,12 @@ Vue.component('dashboard',{
     data: function(){
         return {
             players:[],
-            positions:[{
-                selected: true,
-            }],
+            positions:[{abbr: 'All', selected: true}],
             league: {},
             orderByField: 'attributes.espn_rank',
             orderByDirection: 1,
             selectedPlayer: {},
-            universeStatus: {
-                complete: false,
-                error: false,
-                msg: '',
-            },
+            universeErrors: [],
             playerFilter: {}
         }
     },
@@ -95,22 +89,82 @@ Vue.component('dashboard',{
             }
         },
         calculateUniverse: function(){
-            this.universeStatus.msg = '';
+            var msg = '';
+            this.universeErrors = [];
             var universe = this.players.filter(function(p){
                 return p.universe == 1;
             });
+            var qb = universe.filter(function(p){
+                return p.position == "QB";
+            });
+            if (this.league.count_qb* this.league.team_count != qb.length){
+                if (this.league.count_qb * this.league.team_count > qb.length){
+                    msg = 'Not enough';
+                }else{
+                    msg = 'Too many';
+                }
+                msg += ' Quarter Backs';
+                this.universeErrors.push(msg);
+            }
+            var rb = universe.filter(function(p){
+                return p.position == "RB";
+            });
+            if (this.league.count_rb * this.league.team_count != rb.length){
+                if (this.league.count_rb * this.league.team_count > rb.length){
+                    msg = 'Not enough';
+                }else{
+                    msg = 'Too many';
+                }
+                msg += ' Running Backs';
+                this.universeErrors.push(msg);
+            }
             var wr = universe.filter(function(p){
                 return p.position == "WR";
             });
             if (this.league.count_wr * this.league.team_count != wr.length){
-                this.universeStatus.error = true;
-                this.universeStatus.complete = false;
                 if (this.league.count_wr * this.league.team_count > wr.length){
-                    this.universeStatus.msg += 'Not enough';
+                    msg = 'Not enough';
                 }else{
-                    this.universeStatus.msg += 'Too many';
+                    msg = 'Too many';
                 }
-                this.universeStatus.msg += ' Wide Receivers\r\ntest';
+                msg += ' Wide Receivers';
+                this.universeErrors.push(msg);
+            }
+            var te = universe.filter(function(p){
+                return p.position == "TE";
+            });
+            if (this.league.count_te * this.league.team_count != te.length){
+                if (this.league.count_te * this.league.team_count > te.length){
+                    msg = 'Not enough';
+                }else{
+                    msg = 'Too many';
+                }
+                msg += ' Tight Ends';
+                this.universeErrors.push(msg);
+            }
+            var d = universe.filter(function(p){
+                return p.position == "D-ST";
+            });
+            if (this.league.count_d_st * this.league.team_count != d.length){
+                if (this.league['count_d-st'] * this.league.team_count > d.length){
+                    msg = 'Not enough';
+                }else{
+                    msg = 'Too many';
+                }
+                msg += ' Defenses';
+                this.universeErrors.push(msg);
+            }
+            var k = universe.filter(function(p){
+                return p.position == "K";
+            });
+            if (this.league.count_k * this.league.team_count != k.length){
+                if (this.league.count_k * this.league.team_count > k.length){
+                    msg = 'Not enough';
+                }else{
+                    msg = 'Too many';
+                }
+                msg += ' Kickers';
+                this.universeErrors.push(msg);
             }
         },
     }

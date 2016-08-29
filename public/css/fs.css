@@ -20,8 +20,8 @@
     padding:2px !important;
 }
 .filter-positions{
-    width: 100%;
-    text-align: right;
+    left: 250px;
+    position: relative;
 }
 .player-info{
     position:absolute;
@@ -32,5 +32,5 @@
     display:none;
 }
 .universe_status.alert-danger,.universe_status.alert-success{
-    display:inline;
+    display:block;
 }
