@@ -51,7 +51,7 @@ class grabespnstats extends Command
                 ->orderBy('projected_stats.updated_at')
                 ->first();
             if ($player->positions[0]->slug == 'd-st'){
-                $search = "&slotCategoryId=16";
+                $search = "&slotCategoryId=16&search=d/st&startIndex=15";
             }else{
                 $search = urlencode($player->last_name);
             }
@@ -150,10 +150,10 @@ class grabespnstats extends Command
                                 $player->set_attribute('espn_outlook', $outlooktr->getElementsByTagName('td')->item(0)->textContent);
                             }
                         }
+                        $stat->touch();
                     }
                 }
             }
-            $stat->touch();
             $this->info('Grabbed stats for '.$player->first_name.' '. $player->last_name);
         }
     }
