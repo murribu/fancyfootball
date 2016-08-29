@@ -149,6 +149,8 @@ class grabespnstats extends Command
                             if ($outlooktr = $table->getElementsByTagName('tr')->item(3)){
                                 $player->set_attribute('espn_outlook', $outlooktr->getElementsByTagName('td')->item(0)->textContent);
                             }
+                        }else{
+                            $stat->save();
                         }
                     }
                 }
