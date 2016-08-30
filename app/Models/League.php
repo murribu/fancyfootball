@@ -66,7 +66,7 @@ class League extends Model {
             'd-st' => 0,
         ];
         $limit = 5;
-        DB::enableQueryLog();
+        // DB::enableQueryLog();
         foreach($replacement_levels as $pos=>$points){
             $values = PlayerValue::join('player_attribute_values', 'player_attribute_values.player_id', '=', 'player_values.player_id')
                 ->join('player_attributes', 'player_attributes.id', '=', 'player_attribute_values.player_attribute_id')
@@ -78,7 +78,7 @@ class League extends Model {
                 ->limit($limit)
                 ->get();
             $avg = 0;
-            dd(DB::getQueryLog());
+            // dd(DB::getQueryLog());
             foreach($values as $v){
                 $avg += $v->points;
             }
