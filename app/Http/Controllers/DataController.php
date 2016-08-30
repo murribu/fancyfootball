@@ -40,7 +40,7 @@ class DataController extends Controller
                     $join->on('player_values.league_id', '=', DB::raw(Auth::user()->league()->id));
                 }
             })
-            ->selectRaw('players.id, players.first_name, players.last_name, players.slug, nflteams.espn_abbr, positions.abbr position, ifnull(universe.active,0) universe, ifnull(league_player.taken,0) taken, player_values.points_above_replacement')
+            ->selectRaw('players.id, players.first_name, players.last_name, players.slug, nflteams.espn_abbr, nflteams.bye_week, positions.abbr position, ifnull(universe.active,0) universe, ifnull(league_player.taken,0) taken, player_values.points_above_replacement')
             ->orderBy('points_above_replacement', 'desc')
             ->limit(350)
             ->get();

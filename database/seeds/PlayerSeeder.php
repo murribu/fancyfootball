@@ -15,161 +15,193 @@ class PlayerSeeder extends Seeder{
                 'name' => 'Cardinals',
                 'location' => 'Arizona',
                 'espn_abbr' => 'Ari',
+                'bye_week' => 9,
             ),
             array(
                 'name' => 'Falcons',
                 'location' => 'Atlanta',
                 'espn_abbr' => 'Atl',
+                'bye_week' => 11,
             ),
             array(
                 'name' => 'Ravens',
                 'location' => 'Baltimore',
                 'espn_abbr' => 'Bal',
+                'bye_week' => 8,
             ),
             array(
                 'name' => 'Bills',
                 'location' => 'Buffalo',
                 'espn_abbr' => 'Buf',
+                'bye_week' => 10,
             ),
             array(
                 'name' => 'Panthers',
                 'location' => 'Carolina',
                 'espn_abbr' => 'Car',
+                'bye_week' => 7,
             ),
             array(
                 'name' => 'Bears',
                 'location' => 'Chicago',
                 'espn_abbr' => 'Chi',
+                'bye_week' => 9,
             ),
             array(
                 'name' => 'Bengals',
                 'location' => 'Cincinnati',
                 'espn_abbr' => 'Cin',
+                'bye_week' => 9,
             ),
             array(
                 'name' => 'Browns',
                 'location' => 'Cleveland',
                 'espn_abbr' => 'Cle',
+                'bye_week' => 13,
             ),
             array(
                 'name' => 'Cowboys',
                 'location' => 'Dallas',
                 'espn_abbr' => 'Dal',
+                'bye_week' => 7,
             ),
             array(
                 'name' => 'Broncos',
                 'location' => 'Denver',
                 'espn_abbr' => 'Den',
+                'bye_week' => 11,
             ),
             array(
                 'name' => 'Lions',
                 'location' => 'Detroit',
                 'espn_abbr' => 'Det',
+                'bye_week' => 10,
             ),
             array(
                 'name' => 'Packers',
                 'location' => 'Green Bay',
                 'espn_abbr' => 'GB',
+                'bye_week' => 4,
             ),
             array(
                 'name' => 'Texans',
                 'location' => 'Houston',
                 'espn_abbr' => 'Hou',
+                'bye_week' => 9,
             ),
             array(
                 'name' => 'Colts',
                 'location' => 'Indianapolis',
                 'espn_abbr' => 'Ind',
+                'bye_week' => 10,
             ),
             array(
                 'name' => 'Jaguars',
                 'location' => 'Jacksonville',
                 'espn_abbr' => 'Jax',
+                'bye_week' => 5,
             ),
             array(
                 'name' => 'Chiefs',
                 'location' => 'Kansas City',
                 'espn_abbr' => 'KC',
+                'bye_week' => 5,
             ),
             array(
                 'name' => 'Rams',
                 'location' => 'Los Angeles',
                 'espn_abbr' => 'LA',
+                'bye_week' => 8,
             ),
             array(
                 'name' => 'Dolphins',
                 'location' => 'Miami',
                 'espn_abbr' => 'Mia',
+                'bye_week' => 8,
             ),
             array(
                 'name' => 'Vikings',
                 'location' => 'Minnesota',
                 'espn_abbr' => 'Min',
+                'bye_week' => 6,
             ),
             array(
                 'name' => 'Giants',
                 'location' => 'New York',
                 'espn_abbr' => 'NYG',
+                'bye_week' => 8,
             ),
             array(
                 'name' => 'Jets',
                 'location' => 'New York',
                 'espn_abbr' => 'NYJ',
+                'bye_week' => 11,
             ),
             array(
                 'name' => 'Patriots',
                 'location' => 'New England',
                 'espn_abbr' => 'NE',
+                'bye_week' => 9,
             ),
             array(
                 'name' => 'Saints',
                 'location' => 'New Orleans',
                 'espn_abbr' => 'NO',
+                'bye_week' => 5,
             ),
             array(
                 'name' => 'Raiders',
                 'location' => 'Oakland',
                 'espn_abbr' => 'Oak',
+                'bye_week' => 10,
             ),
             array(
                 'name' => 'Eagles',
                 'location' => 'Philadelphia',
                 'espn_abbr' => 'Phi',
+                'bye_week' => 4,
             ),
             array(
                 'name' => 'Steelers',
                 'location' => 'Pittsburgh',
                 'espn_abbr' => 'Pit',
+                'bye_week' => 8,
             ),
             array(
                 'name' => '49ers',
                 'location' => 'San Francisco',
                 'espn_abbr' => 'SF',
+                'bye_week' => 8,
             ),
             array(
                 'name' => 'Chargers',
                 'location' => 'San Diego',
                 'espn_abbr' => 'SD',
+                'bye_week' => 11,
             ),
             array(
                 'name' => 'Seahawks',
                 'location' => 'Seattle',
                 'espn_abbr' => 'Sea',
+                'bye_week' => 5,
             ),
             array(
                 'name' => 'Buccaneers',
                 'location' => 'Tampa Bay',
                 'espn_abbr' => 'TB',
+                'bye_week' => 6,
             ),
             array(
                 'name' => 'Titans',
                 'location' => 'Tennessee',
                 'espn_abbr' => 'Ten',
+                'bye_week' => 13,
             ),
             array(
                 'name' => 'Redskins',
                 'location' => 'Washington',
                 'espn_abbr' => 'Wsh',
+                'bye_week' => 9,
             ),
         );
         
@@ -181,8 +213,9 @@ class PlayerSeeder extends Seeder{
                 $t->location = $team['location'];
                 $t->espn_abbr = $team['espn_abbr'];
                 $t->slug = Nflteam::findSlug($team['name']);
-                $t->save();
             }
+            $t->bye_week = $team['bye_week'];
+            $t->save();
         }
         
         $positions = array(

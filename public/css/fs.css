@@ -5,10 +5,10 @@
 .player-table-container{
     height:600px;
     overflow-y:scroll;
-    width:550px;
+    width:600px;
 }
 .table-players{
-    width: 525px;
+    width: 575px;
     position:relative;
     top:0;
     left:0;
@@ -24,7 +24,7 @@
 }
 .player-info{
     position:absolute;
-    left:570px;
+    left:620px;
     top:0px;
 }
 .universe_status{

@@ -42,6 +42,7 @@
                         <th>Team</th>
                         <th><a href="#" @click="updateOrderBy('last_name')">Name</a></th>
                         <th>Pos</th>
+                        <th>Bye</th>
                         @if ($user->league())
                             <th>Uni</th>
                             <th><a href="#" @click="updateOrderBy('points_above_replacement', -1)">Value</a></th>
@@ -65,6 +66,9 @@
                             </td>
                             <td>
                                 @{{player.position}}
+                            </td>
+                            <td>
+                                @{{player.bye_week}}
                             </td>
                             @if ($user->league())
                                 <td>
