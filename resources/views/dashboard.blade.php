@@ -36,18 +36,21 @@
             <div class="player-table-container">
                 <table class="table table-striped table-players">
                     <thead>
-                        <th><a href="#" @click="updateOrderBy('attributes.espn_rank')">Rank</a></th>
+                        <th><a href="#" @click="updateOrderBy('my_rank')">My Rank</a></th>
+                        <th><a href="#" @click="updateOrderBy('attributes.espn_rank')">ESPN Rank</a></th>
                         <th>Team</th>
                         <th><a href="#" @click="updateOrderBy('last_name')">Name</a></th>
                         <th>Pos</th>
                         @if ($user->league())
                             <th>Uni</th>
-                            <th>Taken</th>
                             <th><a href="#" @click="updateOrderBy('points_above_replacement', -1)">Value</a></th>
                         @endif
                     </thead>
                     <tbody>
                         <tr @click="selectPlayer(player)" v-for="player in players | orderBy orderByField orderByDirection | filterBy filterPlayersByPosition | filterBy filterPlayersByTaken">
+                            <td>
+                                @{{player.my_rank}}
+                            </td>
                             <td>
                                 @{{player.attributes.espn_rank}}
                             </td>
@@ -63,9 +66,6 @@
                             @if ($user->league())
                                 <td>
                                     @{{player.universe == 1 ? 'Yes' : 'No'}}
-                                </td>
-                                <td>
-                                    @{{player.taken == 1 ? 'Yes' : 'No'}}
                                 </td>
                                 <td>
                                     @{{player.points_above_replacement}}

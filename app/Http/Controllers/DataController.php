@@ -18,6 +18,7 @@ use App\Models\Universe;
 class DataController extends Controller
 {
     public function getPlayers(){
+        // DB::enableQueryLog();
         $players = Player::leftJoin('nflteams', 'nflteams.id', '=', 'players.nflteam_id')
             ->leftJoin('player_position', 'players.id', '=', 'player_position.player_id')
             ->leftJoin('positions', 'positions.id', '=', 'player_position.position_id')
@@ -43,11 +44,14 @@ class DataController extends Controller
             ->orderBy('points_above_replacement', 'desc')
             ->limit(350)
             ->get();
+        // dd(DB::getQueryLog());
+        $rank = 1;
         foreach($players as $k=>$player){
             $players[$k]->attributes = $player->attributes();
             $players[$k]->points_above_replacement = floatval($players[$k]->points_above_replacement);
             unset($players[$k]->player_attributes_values);
             unset($players[$k]->id);
+            $players[$k]->my_rank = $rank++;
         }
         return $players;
     }
