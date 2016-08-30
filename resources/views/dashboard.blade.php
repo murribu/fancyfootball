@@ -48,7 +48,9 @@
                         @endif
                     </thead>
                     <tbody>
-                        <tr @click="selectPlayer(player)" v-for="player in players | orderBy orderByField orderByDirection | filterBy filterPlayersByPosition | filterBy filterPlayersByTaken">
+                        <tr @click="selectPlayer(player)"
+                            v-for="player in players | orderBy orderByField orderByDirection | filterBy filterPlayersByPosition | filterBy filterPlayersByTaken"
+                            v-bind:class="{'my_pick': player.my_pick}">
                             <td>
                                 @{{player.my_rank}}
                             </td>

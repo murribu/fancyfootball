@@ -46,12 +46,28 @@ class DataController extends Controller
             ->get();
         // dd(DB::getQueryLog());
         $rank = 1;
+        $total_taken = 0;
+        $my_pick = -1;
+        $taken_so_far = 0;
+        $projected_pick = 0;
+        if (Auth::user() && Auth::user()->league()){
+            $league = Auth::user()->league();
+            $my_pick = intval($league->attribute('my_pick'));
+            $team_count = intval($league->attribute('team_count'));
+            $total_taken = LeaguePlayer::where('league_id', $league->id)->where('taken', 1)->count();
+        }
         foreach($players as $k=>$player){
             $players[$k]->attributes = $player->attributes();
             $players[$k]->points_above_replacement = floatval($players[$k]->points_above_replacement);
+            
+            $projected_pick = $total_taken + $rank;
+            $players[$k]->projected_pick = $total_taken + $rank;
+            $players[$k]->my_pick = $projected_pick % ($team_count*2) == $my_pick || ((($team_count*2)+1) - $projected_pick) % ($team_count*2) == $my_pick;
+            $players[$k]->my_rank = $rank++;
+            
+            
             unset($players[$k]->player_attributes_values);
             unset($players[$k]->id);
-            $players[$k]->my_rank = $rank++;
         }
         return $players;
     }

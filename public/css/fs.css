@@ -16,7 +16,6 @@
 .table-players tr{
 }
 .table-players td{
-    /*padding:4px !important;*/
     cursor:pointer;
 }
 .filter-positions{
@@ -38,4 +37,7 @@
     text-align:center;
     border-left:1px solid black;
     border-right:1px solid black;
+}
+.my_pick{
+    background-color: pink !important;
 }

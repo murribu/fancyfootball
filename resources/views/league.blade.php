@@ -48,6 +48,12 @@
                                 <input class="form-control" name="count_bench" value="{{isset($league) ? $league->attribute('count_bench') : ''}}" />
                             </div>
                         </div>
+                        <div class="row">
+                            <label class="form-label control-label col-xs-12 col-sm-6" for="name">My pick position (snake draft)</label>
+                            <div class="col-xs-12 col-sm-6">
+                                <input class="form-control" name="my_pick" value="{{isset($league) ? $league->attribute('my_pick') : ''}}" />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <button class="btn btn-primary" type="submit">Save</button>
