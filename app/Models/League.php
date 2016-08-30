@@ -66,7 +66,7 @@ class League extends Model {
             'd-st' => 0,
         ];
         $limit = 5;
-        // DB::enableQueryLog();
+        DB::enableQueryLog();
         foreach($replacement_levels as $pos=>$points){
             $values = PlayerValue::join('player_attribute_values', 'player_attribute_values.player_id', '=', 'player_values.player_id')
                 ->join('player_attributes', 'player_attributes.id', '=', 'player_attribute_values.player_attribute_id')
@@ -74,11 +74,11 @@ class League extends Model {
                 ->whereRaw('player_values.player_id in (select player_id from player_position where position_id = (select id from positions where slug = ?))', [$pos])
                 ->whereRaw('player_values.player_id not in (select player_id from universe where active = 1 and league_id = ?)', [$this->id])
                 ->select('player_values.id', 'player_values.points')
-                ->orderByRaw('cast(player_attribute_values.value as signed)')
+                ->orderByRaw('cast(player_values.points as signed) desc, cast(player_attribute_values.value as signed)')
                 ->limit($limit)
                 ->get();
             $avg = 0;
-            // dd($values);
+            dd(DB::getQueryLog());
             foreach($values as $v){
                 $avg += $v->points;
             }
