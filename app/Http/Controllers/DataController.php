@@ -60,8 +60,11 @@ class DataController extends Controller
             $players[$k]->attributes = $player->attributes();
             $players[$k]->points_above_replacement = floatval($players[$k]->points_above_replacement);
             
-            $projected_pick = $total_taken + $rank;
-            $players[$k]->projected_pick = $total_taken + $rank;
+            if ($players[$k]->taken == 1){
+                $taken_so_far++;
+            }
+            $projected_pick = $total_taken - $taken_so_far + $rank;
+            $players[$k]->projected_pick = $projected_pick;
             $players[$k]->my_pick = $projected_pick % ($team_count*2) == $my_pick || ((($team_count*2)+1) - $projected_pick) % ($team_count*2) == $my_pick;
             $players[$k]->my_rank = $rank++;
             
