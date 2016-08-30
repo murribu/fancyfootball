@@ -36,14 +36,14 @@
             <div class="player-table-container">
                 <table class="table table-striped table-players">
                     <thead>
-                        <th>Rank</th>
+                        <th><a href="#" @click="updateOrderBy('attributes.espn_rank')">Rank</a></th>
                         <th>Team</th>
-                        <th>Name</th>
+                        <th><a href="#" @click="updateOrderBy('last_name')">Name</a></th>
                         <th>Pos</th>
                         @if ($user->league())
                             <th>Uni</th>
                             <th>Taken</th>
-                            <th>Value</th>
+                            <th><a href="#" @click="updateOrderBy('points_above_replacement', -1)">Value</a></th>
                         @endif
                     </thead>
                     <tbody>
@@ -55,7 +55,7 @@
                                 @{{player.espn_abbr}}
                             </td>
                             <td>
-                                <a href="#">@{{player.first_name}} @{{player.last_name}}</a>
+                                @{{player.first_name}} @{{player.last_name}}
                             </td>
                             <td>
                                 @{{player.position}}
@@ -81,6 +81,39 @@
                 <div class="universe_status alert alert-danger" v-for="err in universeErrors">@{{err}}</div>
                 <button class="btn btn-primary" @click="takePlayer(selectedPlayer)" v-show="selectedPlayer.taken == 0">Take Player</button>
                 <button class="btn btn-danger" @click="untakePlayer(selectedPlayer)" v-show="selectedPlayer.taken == 1">Un-Take Player</button>
+                <div v-show="selectedPlayer && selectedPlayer.positions[0] && selectedPlayer.positions[0].type == 'offense'">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td colspan="3" class="stat-header">Passing</td>
+                                <td colspan="3" class="stat-header">Rushing</td>
+                                <td colspan="2" class="stat-header">Receiving</td>
+                            </tr>
+                            <tr>
+                                <td>Yds</td>
+                                <td>TDs</td>
+                                <td>Ints</td>
+                                <td>Yds</td>
+                                <td>TDs</td>
+                                <td>Fumb</td>
+                                <td>Yds</td>
+                                <td>TDs</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@{{selectedPlayer.projected_stats.passing_yards}}</td>
+                                <td>@{{selectedPlayer.projected_stats.passing_tds}}</td>
+                                <td>@{{selectedPlayer.projected_stats.passing_ints}}</td>
+                                <td>@{{selectedPlayer.projected_stats.rushing_yards}}</td>
+                                <td>@{{selectedPlayer.projected_stats.rushing_tds}}</td>
+                                <td>@{{selectedPlayer.projected_stats.fumbles}}</td>
+                                <td>@{{selectedPlayer.projected_stats.receiving_yards}}</td>
+                                <td>@{{selectedPlayer.projected_stats.receiving_tds}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>       
         </div>
     </template>

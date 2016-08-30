@@ -18,7 +18,6 @@ use App\Models\Universe;
 class DataController extends Controller
 {
     public function getPlayers(){
-        // DB::enableQueryLog();
         $players = Player::leftJoin('nflteams', 'nflteams.id', '=', 'players.nflteam_id')
             ->leftJoin('player_position', 'players.id', '=', 'player_position.player_id')
             ->leftJoin('positions', 'positions.id', '=', 'player_position.position_id')
@@ -42,10 +41,8 @@ class DataController extends Controller
             })
             ->selectRaw('players.*, nflteams.espn_abbr, positions.abbr position, ifnull(universe.active,0) universe, ifnull(league_player.taken,0) taken, player_values.points_above_replacement')
             ->orderBy('universe', 'desc')
-            ->orderBy('players.id')
-            ->limit(300)
+            ->orderBy('player_values.points_above_replacement')
             ->get();
-        // dd(DB::getQueryLog());
         foreach($players as $k=>$player){
             $players[$k]->attributes = $player->attributes();
             $players[$k]->points_above_replacement = floatval($players[$k]->points_above_replacement);
@@ -54,7 +51,7 @@ class DataController extends Controller
     }
     
     public function getPlayer($slug){
-        $player = Player::where('slug', $slug)->first();
+        $player = Player::with('projected_stats', 'positions')->where('slug', $slug)->first();
         if ($player && Auth::user() && Auth::user()->league()){
             $player->in_universe = Universe::where('player_id', $player->id)
                 ->where('league_id', Auth::user()->league()->id)

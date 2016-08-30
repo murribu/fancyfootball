@@ -2,14 +2,12 @@
     position:relative;
 }
 .player-table-container{
-    height:500px;
+    height:600px;
     overflow-y:scroll;
     width:550px;
 }
 .table-players{
     width: 525px;
-    height: 667px;
-    font-size: small;
     position:relative;
     top:0;
     left:0;
@@ -17,7 +15,8 @@
 .table-players tr{
 }
 .table-players td{
-    padding:4px !important;
+    /*padding:4px !important;*/
+    cursor:pointer;
 }
 .filter-positions{
     left: 100px;
@@ -33,4 +32,9 @@
 }
 .universe_status.alert-danger,.universe_status.alert-success{
     display:block;
+}
+.stat-header{
+    text-align:center;
+    border-left:1px solid black;
+    border-right:1px solid black;
 }

@@ -52,11 +52,15 @@ Vue.component('dashboard',{
                 vm.loadPlayers();
             });
         },
-        updateOrderBy: function(col){
+        updateOrderBy: function(col, dir){
+            var default_direction = 1;
+            if (dir != null){
+                default_direction = dir;
+            }
             if (col == this.orderByField){
                 this.orderByDirection = -1 * this.orderByDirection;
             }else{
-                this.orderByDirection = 1;
+                this.orderByDirection = default_direction;
                 this.orderByField = col;
             }
             
