@@ -44,7 +44,8 @@
                         <th>Pos</th>
                         <th>Bye</th>
                         @if ($user->league())
-                            <th>Uni</th>
+                            <th><a href="#" @click="updateOrderBy('taken', -1)">Taken</a></th>
+                            <th><a href="#" @click="updateOrderBy('universe', -1)">Uni</a></th>
                             <th><a href="#" @click="updateOrderBy('points_above_replacement', -1)">Value</a></th>
                         @endif
                     </thead>
@@ -71,6 +72,9 @@
                                 @{{player.bye_week}}
                             </td>
                             @if ($user->league())
+                                <td>
+                                    @{{player.taken == 1 ? 'Yes' : 'No'}}
+                                </td>
                                 <td>
                                     @{{player.universe == 1 ? 'Yes' : 'No'}}
                                 </td>
