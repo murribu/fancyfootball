@@ -41,3 +41,6 @@
 .my_pick{
     background-color: pink !important;
 }
+.selected{
+    background-color: yellow !important;
+}

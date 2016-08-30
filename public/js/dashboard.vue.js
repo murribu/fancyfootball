@@ -7,7 +7,9 @@ Vue.component('dashboard',{
             league: {},
             orderByField: 'points_above_replacement',
             orderByDirection: -1,
-            selectedPlayer: {},
+            selectedPlayer: {
+                projected_stats:{}
+            },
             universeErrors: [],
             filterByTaken: true,
         }
