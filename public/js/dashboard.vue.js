@@ -133,7 +133,7 @@ Vue.component('dashboard',{
                 }else{
                     msg = 'Too many';
                 }
-                msg += ' Quarter Backs';
+                msg += ' Quarter Backs ' + (this.league.count_qb * this.league.team_count) + ' vs ' + qb.length;
                 this.universeErrors.push(msg);
             }
             var rb = universe.filter(function(p){
@@ -145,7 +145,7 @@ Vue.component('dashboard',{
                 }else{
                     msg = 'Too many';
                 }
-                msg += ' Running Backs';
+                msg += ' Running Backs ' + (this.league.count_rb * this.league.team_count) + ' vs ' + rb.length;
                 this.universeErrors.push(msg);
             }
             var wr = universe.filter(function(p){
@@ -157,7 +157,7 @@ Vue.component('dashboard',{
                 }else{
                     msg = 'Too many';
                 }
-                msg += ' Wide Receivers';
+                msg += ' Wide Receivers ' + (this.league.count_wr * this.league.team_count) + ' vs ' + wr.length;
                 this.universeErrors.push(msg);
             }
             var te = universe.filter(function(p){
@@ -169,7 +169,7 @@ Vue.component('dashboard',{
                 }else{
                     msg = 'Too many';
                 }
-                msg += ' Tight Ends';
+                msg += ' Tight Ends ' + (this.league.count_te * this.league.team_count) + ' vs ' + te.length;
                 this.universeErrors.push(msg);
             }
             var d = universe.filter(function(p){
@@ -181,7 +181,7 @@ Vue.component('dashboard',{
                 }else{
                     msg = 'Too many';
                 }
-                msg += ' Defenses';
+                msg += ' Defenses ' + (this.league['count_d-st'] * this.league.team_count) + ' vs ' + d.length;
                 this.universeErrors.push(msg);
             }
             var k = universe.filter(function(p){
@@ -193,7 +193,7 @@ Vue.component('dashboard',{
                 }else{
                     msg = 'Too many';
                 }
-                msg += ' Kickers';
+                msg += ' Kickers ' + (this.league.count_k * this.league.team_count) + ' vs ' + k.length;
                 this.universeErrors.push(msg);
             }
         },
