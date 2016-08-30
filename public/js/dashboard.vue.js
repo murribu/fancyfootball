@@ -9,7 +9,7 @@ Vue.component('dashboard',{
             orderByDirection: -1,
             selectedPlayer: {},
             universeErrors: [],
-            filterByTaken: false,
+            filterByTaken: true,
         }
     },
     created: function(){

@@ -39,19 +39,21 @@ class DataController extends Controller
                     $join->on('player_values.league_id', '=', DB::raw(Auth::user()->league()->id));
                 }
             })
-            ->selectRaw('players.*, nflteams.espn_abbr, positions.abbr position, ifnull(universe.active,0) universe, ifnull(league_player.taken,0) taken, player_values.points_above_replacement')
-            ->orderBy('universe', 'desc')
-            ->orderBy('player_values.points_above_replacement')
+            ->selectRaw('players.id, players.first_name, players.last_name, players.slug, nflteams.espn_abbr, positions.abbr position, ifnull(universe.active,0) universe, ifnull(league_player.taken,0) taken, player_values.points_above_replacement')
+            ->orderBy('points_above_replacement', 'desc')
+            ->limit(350)
             ->get();
         foreach($players as $k=>$player){
             $players[$k]->attributes = $player->attributes();
             $players[$k]->points_above_replacement = floatval($players[$k]->points_above_replacement);
+            unset($players[$k]->player_attributes_values);
+            unset($players[$k]->id);
         }
         return $players;
     }
     
     public function getPlayer($slug){
-        $player = Player::with('projected_stats', 'positions')->where('slug', $slug)->first();
+        $player = Player::with('projected_stats')->where('slug', $slug)->first();
         if ($player && Auth::user() && Auth::user()->league()){
             $player->in_universe = Universe::where('player_id', $player->id)
                 ->where('league_id', Auth::user()->league()->id)
@@ -61,6 +63,8 @@ class DataController extends Controller
                 ->where('league_id', Auth::user()->league()->id)
                 ->where('taken', '1')
                 ->count() > 0;
+            $player->position_type = count($player->positions) > 0 ? $player->positions[0]->type : '';
+            $player->outlook = $player->attribute('espn_outlook');
         }else{
             $player->in_universe = false;
         }

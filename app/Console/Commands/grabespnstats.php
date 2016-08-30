@@ -46,7 +46,7 @@ class grabespnstats extends Command
         if (mt_rand(0,$frequency) == 1 || $force){
             $player = Player::leftJoin('projected_stats', 'projected_stats.player_id', '=', 'players.id')
                 ->select('players.id', 'players.slug', 'players.first_name', 'players.last_name', 'espn_alt_id')
-                // ->where('players.id', 144)
+                // ->where('players.id', 158)
                 // ->whereRaw('players.id in (select player_id from player_position where position_id = (select id from positions where slug = ?))', array('k'))
                 ->orderBy('projected_stats.updated_at')
                 ->first();
@@ -128,17 +128,17 @@ class grabespnstats extends Command
                                     $stat->save();
                                     break;
                                 case 'k':
-                                    $node = floatval($tds->item(2)->nodeValue);
-                                    $stat->fg_1_39_attempted = floatval(trim(substr($node, 0, strpos($node,'/'))));
-                                    $stat->fg_1_39_made = floatval(trim(substr($node, strpos($node,'/') + 1, 999)));
-                                    $node = floatval($tds->item(3)->nodeValue);
-                                    $stat->fg_40_49_attempted = floatval(trim(substr($node, 0, strpos($node,'/'))));
-                                    $stat->fg_40_49_made = floatval(trim(substr($node, strpos($node,'/') + 1, 999)));
-                                    $stat->fg_50_attempted = floatval($tds->item(4)->nodeValue);
+                                    $node = $tds->item(2)->nodeValue;
+                                    $stat->fg_1_39_made = floatval(trim(substr($node, 0, strpos($node,'/'))));
+                                    $stat->fg_1_39_attempted = floatval(trim(substr($node, strpos($node,'/') + 1, 999)));
+                                    $node = $tds->item(3)->nodeValue;
+                                    $stat->fg_40_49_made = floatval(trim(substr($node, 0, strpos($node,'/'))));
+                                    $stat->fg_40_49_attempted = floatval(trim(substr($node, strpos($node,'/') + 1, 999)));
                                     $stat->fg_50_made = floatval($tds->item(4)->nodeValue);
-                                    $node = floatval($tds->item(6)->nodeValue);
-                                    $stat->extra_points_attempted = floatval(trim(substr($node, 0, strpos($node,'/'))));
-                                    $stat->extra_points_made = floatval(trim(substr($node, strpos($node,'/') + 1, 999)));
+                                    $stat->fg_50_attempted = floatval($tds->item(4)->nodeValue);
+                                    $node = $tds->item(6)->nodeValue;
+                                    $stat->extra_points_made = floatval(trim(substr($node, 0, strpos($node,'/'))));
+                                    $stat->extra_points_attempted = floatval(trim(substr($node, strpos($node,'/') + 1, 999)));
                                     $stat->save();
                                     break;
                                 default:

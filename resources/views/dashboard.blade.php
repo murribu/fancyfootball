@@ -81,7 +81,7 @@
                 <div class="universe_status alert alert-danger" v-for="err in universeErrors">@{{err}}</div>
                 <button class="btn btn-primary" @click="takePlayer(selectedPlayer)" v-show="selectedPlayer.taken == 0">Take Player</button>
                 <button class="btn btn-danger" @click="untakePlayer(selectedPlayer)" v-show="selectedPlayer.taken == 1">Un-Take Player</button>
-                <div v-show="selectedPlayer && selectedPlayer.positions[0] && selectedPlayer.positions[0].type == 'offense'">
+                <div v-show="selectedPlayer && selectedPlayer.position_type == 'offense'">
                     <table class="table">
                         <thead>
                             <tr>
@@ -110,6 +110,63 @@
                                 <td>@{{selectedPlayer.projected_stats.fumbles}}</td>
                                 <td>@{{selectedPlayer.projected_stats.receiving_yards}}</td>
                                 <td>@{{selectedPlayer.projected_stats.receiving_tds}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8">
+                                    @{{selectedPlayer.outlook}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div v-show="selectedPlayer && selectedPlayer.position_type == 'defense'">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>Sacks</td>
+                                <td>Points Allowed</td>
+                                <td>TDs</td>
+                                <td>Fumble Recoveries</td>
+                                <td>Ints</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@{{selectedPlayer.projected_stats.defense_sacks}}</td>
+                                <td>@{{selectedPlayer.projected_stats.defense_points_against}}</td>
+                                <td>@{{selectedPlayer.projected_stats.defense_tds}}</td>
+                                <td>@{{selectedPlayer.projected_stats.defense_fumble_recoveries}}</td>
+                                <td>@{{selectedPlayer.projected_stats.defense_ints}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8">
+                                    @{{selectedPlayer.outlook}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div v-show="selectedPlayer && selectedPlayer.position_type == 'kicker'">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>FG 1-39</td>
+                                <td>FG 40-49</td>
+                                <td>FG 50+</td>
+                                <td>PAT</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>@{{selectedPlayer.projected_stats.fg_1_39_made}}</td>
+                                <td>@{{selectedPlayer.projected_stats.fg_40_49_made}}</td>
+                                <td>@{{selectedPlayer.projected_stats.fg_50_made}}</td>
+                                <td>@{{selectedPlayer.projected_stats.extra_points_made}}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="8">
+                                    @{{selectedPlayer.outlook}}
+                                </td>
                             </tr>
                         </tbody>
                     </table>
