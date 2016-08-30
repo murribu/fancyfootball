@@ -114,7 +114,6 @@ Vue.component('dashboard',{
                 this.$http.post('toggle_universe', sent).then(function(data){
                     vm.selectedPlayer = JSON.parse(data.body);
                     vm.loadPlayers();
-                    vm.calculateValues();
                 });
             }
         },
@@ -127,73 +126,73 @@ Vue.component('dashboard',{
             var qb = universe.filter(function(p){
                 return p.position == "QB";
             });
-            if (this.league.count_qb* this.league.team_count != qb.length){
-                if (this.league.count_qb * this.league.team_count > qb.length){
+            if (this.league.count_qb != qb.length){
+                if (this.league.count_qb > qb.length){
                     msg = 'Not enough';
                 }else{
                     msg = 'Too many';
                 }
-                msg += ' Quarter Backs ' + (this.league.count_qb * this.league.team_count) + ' vs ' + qb.length;
+                msg += ' Quarter Backs ' + this.league.count_qb + ' vs ' + qb.length;
                 this.universeErrors.push(msg);
             }
             var rb = universe.filter(function(p){
                 return p.position == "RB";
             });
-            if (this.league.count_rb * this.league.team_count != rb.length){
-                if (this.league.count_rb * this.league.team_count > rb.length){
+            if (this.league.count_rb != rb.length){
+                if (this.league.count_rb > rb.length){
                     msg = 'Not enough';
                 }else{
                     msg = 'Too many';
                 }
-                msg += ' Running Backs ' + (this.league.count_rb * this.league.team_count) + ' vs ' + rb.length;
+                msg += ' Running Backs ' + this.league.count_rb + ' vs ' + rb.length;
                 this.universeErrors.push(msg);
             }
             var wr = universe.filter(function(p){
                 return p.position == "WR";
             });
-            if (this.league.count_wr * this.league.team_count != wr.length){
-                if (this.league.count_wr * this.league.team_count > wr.length){
+            if (this.league.count_wr != wr.length){
+                if (this.league.count_wr > wr.length){
                     msg = 'Not enough';
                 }else{
                     msg = 'Too many';
                 }
-                msg += ' Wide Receivers ' + (this.league.count_wr * this.league.team_count) + ' vs ' + wr.length;
+                msg += ' Wide Receivers ' + this.league.count_wr + ' vs ' + wr.length;
                 this.universeErrors.push(msg);
             }
             var te = universe.filter(function(p){
                 return p.position == "TE";
             });
-            if (this.league.count_te * this.league.team_count != te.length){
-                if (this.league.count_te * this.league.team_count > te.length){
+            if (this.league.count_te != te.length){
+                if (this.league.count_te > te.length){
                     msg = 'Not enough';
                 }else{
                     msg = 'Too many';
                 }
-                msg += ' Tight Ends ' + (this.league.count_te * this.league.team_count) + ' vs ' + te.length;
+                msg += ' Tight Ends ' + this.league.count_te + ' vs ' + te.length;
                 this.universeErrors.push(msg);
             }
             var d = universe.filter(function(p){
                 return p.position == "D-ST";
             });
-            if (this.league.count_d_st * this.league.team_count != d.length){
-                if (this.league['count_d-st'] * this.league.team_count > d.length){
+            if (this.league.count_d_st != d.length){
+                if (this.league.count_d_st > d.length){
                     msg = 'Not enough';
                 }else{
                     msg = 'Too many';
                 }
-                msg += ' Defenses ' + (this.league['count_d-st'] * this.league.team_count) + ' vs ' + d.length;
+                msg += ' Defenses ' + this.league.count_d_st + ' vs ' + d.length;
                 this.universeErrors.push(msg);
             }
             var k = universe.filter(function(p){
                 return p.position == "K";
             });
-            if (this.league.count_k * this.league.team_count != k.length){
-                if (this.league.count_k * this.league.team_count > k.length){
+            if (this.league.count_k != k.length){
+                if (this.league.count_k > k.length){
                     msg = 'Not enough';
                 }else{
                     msg = 'Too many';
                 }
-                msg += ' Kickers ' + (this.league.count_k * this.league.team_count) + ' vs ' + k.length;
+                msg += ' Kickers ' + this.league.count_k + ' vs ' + k.length;
                 this.universeErrors.push(msg);
             }
         },

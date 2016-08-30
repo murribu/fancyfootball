@@ -29,6 +29,7 @@
     <template id="dashboard-template">
         <div class="draft-container">
             <div class="filter-positions">
+                <button class="btn btn-primary" @click="calculateValues()">Calc Values</button>
                 <button class="btn btn-primary" v-show="filterByTaken" @click="filterByTaken = false">Show Taken Players</button>
                 <button class="btn btn-primary" v-show="!filterByTaken" @click="filterByTaken = true">Hide Taken Players</button>
                 <button class="btn btn-sm" v-for="p in positions" @click="selectPosition(p)" v-bind:class="{ 'btn-default': !p.selected, 'btn-primary': p.selected}">@{{p.abbr}}</button>

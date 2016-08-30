@@ -1,5 +1,6 @@
 .draft-container{
     position:relative;
+    margin-top: 5px;
 }
 .player-table-container{
     height:600px;
@@ -19,7 +20,7 @@
     cursor:pointer;
 }
 .filter-positions{
-    left: 100px;
+    left: 0px;
     position: relative;
 }
 .player-info{

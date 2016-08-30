@@ -34,14 +34,20 @@
                         @endforeach
                     </div>
                     <div class="col-xs-12 col-sm-6">
-                    @foreach(\App\Models\Position::all() as $position)
+                        @foreach(\App\Models\Position::all() as $position)
                         <div class="row">
                             <label class="form-label control-label col-xs-12 col-sm-6" for="name">Number of {{strtoupper($position->slug)}}s</label>
                             <div class="col-xs-12 col-sm-6">
                                 <input class="form-control" name="{{$position->slug}}" value="{{isset($league) ? $league->attribute('count_'.$position->slug) : ''}}" />
                             </div>
                         </div>
-                    @endforeach
+                        @endforeach
+                        <div class="row">
+                            <label class="form-label control-label col-xs-12 col-sm-6" for="name">Number of Bench spots</label>
+                            <div class="col-xs-12 col-sm-6">
+                                <input class="form-control" name="count_bench" value="{{isset($league) ? $league->attribute('count_bench') : ''}}" />
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <button class="btn btn-primary" type="submit">Save</button>

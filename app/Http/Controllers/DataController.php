@@ -106,13 +106,19 @@ class DataController extends Controller
     }
     
     public function postToggleUniverse(){
-        $player = Player::where('slug', Input::get('player'))->first();
+        $player = Player::with('projected_stats')->where('slug', Input::get('player'))->first();
         if ($player && Auth::user() && Auth::user()->league()){
             $u = Universe::firstOrCreate(['player_id' => $player->id, 'league_id' => Auth::user()->league()->id]);
             
             $u->active = !$u->active;
             $u->save();
             $player->in_universe = $u->active;
+            $player->taken = LeaguePlayer::where('player_id', $player->id)
+                ->where('league_id', Auth::user()->league()->id)
+                ->where('taken', '1')
+                ->count() > 0;
+            $player->position_type = count($player->positions) > 0 ? $player->positions[0]->type : '';
+            $player->outlook = $player->attribute('espn_outlook');
         }
         
         return $player;
@@ -125,6 +131,26 @@ class DataController extends Controller
             foreach($league->attributes() as $key=>$val){
                 $league->{str_replace('-', '_', $key)} = $val;
             }
+            $league->count_qb = intval($league->attribute('team_count')) * intval($league->count_qb);
+            $league->count_k = intval($league->attribute('team_count')) * intval($league->count_k);
+            $league->count_wr = intval($league->attribute('team_count')) * intval($league->count_wr);
+            $league->count_te = intval($league->attribute('team_count')) * intval($league->count_te);
+            $league->count_d_st = intval($league->attribute('team_count')) * intval($league->count_d_st);
+            $league->count_rb = intval($league->attribute('team_count')) * intval($league->count_rb);
+            if (intval($league->attributes('count_bench') > 0)){
+                $bench = intval($league->attribute('count_bench')) * intval($league->attribute('team_count'));
+                $qb_ratio = 1/6;
+                $wr_ratio = 4/9;
+                $rb_ratio = 5/18;
+                $te_ratio = 1/12;
+                $d_ratio = 1/36;
+                $league->count_qb += intval($bench * $qb_ratio);
+                $league->count_wr += intval($bench * $wr_ratio);
+                $league->count_te += intval($bench * $te_ratio);
+                $league->count_d_st += intval($bench * $d_ratio);
+                $league->count_rb += ($bench - intval($bench * $qb_ratio) - intval($bench * $wr_ratio) - intval($bench * $te_ratio) - intval($bench * $d_ratio));
+            }
+            unset($league->league_attributes_values);
         }
         
         return $league;
