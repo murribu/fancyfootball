@@ -263,7 +263,8 @@ class PlayerSeeder extends Seeder{
             }
         }
         
-        $contents = File::get('storage/app/public/nfl.html');
+        // http://games.espn.com/ffl/tools/projections?&startIndex=560
+        $contents = File::get('storage/app/public/2017.html');
         $DOM = new \DOMDocument;
         $DOM->loadHTML($contents);
         foreach($DOM->getElementsByTagName('tbody') as $tbody){
