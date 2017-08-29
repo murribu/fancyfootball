@@ -74,12 +74,12 @@ class grabespnstats extends Command
                     if ($as->length > 0){
                         $pid = $as->item(0)->getAttribute('playerid');
                         $stat = ProjectedStat::where('player_id', $player->id)
-                            ->where('season', 2016)
+                            ->where('season', 2017)
                             ->first();
                         if (!$stat){
                             $stat = new ProjectedStat;
                             $stat->player_id = $player->id;
-                            $stat->season = 2016;
+                            $stat->season = 2017;
                             $stat->save();
                         }
                         if ($pid == $player->espn_alt_id){
