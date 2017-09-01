@@ -69,7 +69,7 @@ class User extends Authenticatable
     }
     
     public function leagues(){
-        return $this->hasMany('App\Models\League')->where('active', '1');
+        return $this->hasMany('App\Models\League');
     }
     
     public function league(){
