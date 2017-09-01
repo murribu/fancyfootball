@@ -48,6 +48,12 @@ class grabespnstats extends Command
                 ->select('players.id', 'players.slug', 'players.first_name', 'players.last_name', 'espn_alt_id')
                 // ->where('players.id', 158)
                 // ->whereRaw('players.id in (select player_id from player_position where position_id = (select id from positions where slug = ?))', array('k'))
+                ->whereIn('players.id', function($query){
+                    $query->select('player_id')
+                        ->from('player_attribute_value')
+                        ->where('player_attribute_id', '2')
+                        ->where('updated_at', '>', '2017-1-1');
+                })
                 ->orderBy('projected_stats.updated_at')
                 ->first();
             if ($player->positions[0]->slug == 'd-st'){
