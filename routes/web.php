@@ -19,7 +19,9 @@ Route::get('auth/facebook/callback', 'Auth\AuthController@handleProviderCallback
 Route::get('auth/me', 'Auth\AuthController@getMe');
 Route::get('auth/logout', 'Auth\AuthController@logout');
 
-// Route::get('auth/login/{id?}', 'Auth\AuthController@loginMe');
+if (env('APP_ENV') === 'local') {
+    Route::get('auth/login/{id?}', 'Auth\AuthController@loginMe');
+}
 
 Route::group(['middleware' => ['auth']], function(){
     Route::get('about', 'HomeController@getAbout');
