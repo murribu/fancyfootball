@@ -51,7 +51,11 @@ class League extends Model {
     }
     
     public function calculateValues(){
-        $players = Player::orderBy('players.id')->get();
+        $players = Player::whereIn('id', function($query) {
+            $query->select('player_id')
+                ->from('projected_stats')
+                ->where('season', '2017');
+        })->orderBy('players.id')->get();
         
         foreach($players as $p){
             $p->calculate_projected_points($this);
