@@ -42,12 +42,19 @@ class grabespnstats extends Command
     public function handle()
     {
         $force = $this->option('force');
-        $frequency = 20; //every $frequency minutes
+        $frequency = 5; //every $frequency minutes
         if (mt_rand(0,$frequency) == 1 || $force){
             $player = Player::leftJoin('projected_stats', 'projected_stats.player_id', '=', 'players.id')
                 ->select('players.id', 'players.slug', 'players.first_name', 'players.last_name', 'espn_alt_id')
                 // ->where('players.id', 158)
                 // ->whereRaw('players.id in (select player_id from player_position where position_id = (select id from positions where slug = ?))', array('k'))
+		// Only grab players who have an espn_rank that has been updated in 2017
+                ->whereIn('players.id', function($query){
+                    $query->select('player_id')
+                        ->from('player_attribute_values')
+                        ->where('player_attribute_id', '2')
+                        ->where('updated_at', '>', '2017-1-1');
+                })
                 ->orderBy('projected_stats.updated_at')
                 ->first();
             if ($player->positions[0]->slug == 'd-st'){
