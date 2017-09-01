@@ -46,7 +46,7 @@ class grabespnstats extends Command
         if (mt_rand(0,$frequency) == 1 || $force){
             $player = Player::leftJoin('projected_stats', 'projected_stats.player_id', '=', 'players.id')
                 ->select('players.id', 'players.slug', 'players.first_name', 'players.last_name', 'espn_alt_id')
-                // ->where('players.id', 158)
+                // ->where('players.id', 272)
                 // ->whereRaw('players.id in (select player_id from player_position where position_id = (select id from positions where slug = ?))', array('k'))
         		// Only grab players who have an espn_rank that has been updated in 2017
                 ->whereIn('players.id', function($query){
@@ -58,6 +58,7 @@ class grabespnstats extends Command
                 ->orderBy('projected_stats.updated_at')
                 ->first();
             if ($player->positions[0]->slug == 'd-st'){
+                // TODO: refactor this - it has to be manually changed to get different strata of defenses
                 $search = "&slotCategoryId=16&search=d/st&startIndex=15";
             }else{
                 $search = urlencode($player->last_name);
