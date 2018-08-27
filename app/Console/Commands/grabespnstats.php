@@ -52,8 +52,8 @@ class grabespnstats extends Command
                 ->whereIn('players.id', function($query){
                     $query->select('player_id')
                         ->from('player_attribute_values')
-                        ->where('player_attribute_id', '2')
-                        ->where('updated_at', '>', '2017-1-1');
+                        ->where('player_attribute_id', '1')
+                        ->where('updated_at', '>', '2018-1-1');
                 })
                 ->orderBy('projected_stats.updated_at')
                 ->first();
