@@ -8,7 +8,7 @@ use App\Models\Player;
 use App\Models\Position;
 
 class PlayerSeeder extends Seeder{
-    
+
     public function run(){
         $teams = array(
             array(
@@ -204,7 +204,7 @@ class PlayerSeeder extends Seeder{
                 'bye_week' => 5,
             ),
         );
-        
+
         foreach($teams as $team){
             $t = Nflteam::where('name', $team['name'])->first();
             if (!$t){
@@ -217,7 +217,7 @@ class PlayerSeeder extends Seeder{
             $t->bye_week = $team['bye_week'];
             $t->save();
         }
-        
+
         $positions = array(
             array(
                 'abbr' => 'QB',
@@ -250,7 +250,7 @@ class PlayerSeeder extends Seeder{
                 'type' => 'kicker',
             ),
         );
-        
+
         foreach($positions as $position){
             $p = Position::where('abbr', $position['abbr'])->first();
             if (!$p){
@@ -262,9 +262,9 @@ class PlayerSeeder extends Seeder{
                 $p->save();
             }
         }
-        
+
         // http://games.espn.com/ffl/tools/projections?&startIndex=560
-        $contents = File::get('storage/app/public/2017.html');
+        $contents = File::get('storage/app/public/2018.html');
         $DOM = new \DOMDocument;
         $DOM->loadHTML($contents);
         foreach($DOM->getElementsByTagName('tbody') as $tbody){
